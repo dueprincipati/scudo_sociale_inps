@@ -1,0 +1,48 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;700;800&family=Space+Grotesk:wght@500;700&family=JetBrains+Mono:wght@500;700&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Space Grotesk", sans-serif;
+  --font-mono: "JetBrains Mono", monospace;
+  
+  --color-blue-650: #1e40af;
+  --color-blue-805: #1e3a8a;
+  --color-slate-450: #64748b;
+  --color-slate-650: #475569;
+}
+
+/* Custom CSS utilities for educational escape room */
+body {
+  background-color: #f8fafc;
+  color: #1e293b;
+  font-family: var(--font-sans);
+}
+
+h1, h2, h3, .font-display {
+  font-family: var(--font-display);
+}
+
+/* Print Layout rules for clean school certificates */
+@media print {
+  body * {
+    visibility: hidden;
+  }
+  .print\:block, .print\:block * {
+    visibility: visible;
+  }
+  .print\:block {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    border: 10px double #4c1d95 !important;
+    padding: 3rem !important;
+    box-sizing: border-box !important;
+    background: white !important;
+  }
+  header, footer, button, form, .print\:hidden {
+    display: none !important;
+  }
+}

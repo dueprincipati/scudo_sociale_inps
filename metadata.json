@@ -1,0 +1,6 @@
+{
+  "name": "Missione Previdenza",
+  "description": "Un'escape room didattica interattiva sulla previdenza sociale e sul funzionamento dell'INPS, pensata per i ragazzi delle scuole medie (11-14 anni).",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
