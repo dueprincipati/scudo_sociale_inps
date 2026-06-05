@@ -12,6 +12,7 @@ export interface Puzzle {
   question: string;
   correctAnswer: string;
   hints: Hint[];
+  mechanicData?: any; // optional extra data per mechanic (e.g. icon tiles, letter masks)
 }
 
 export interface LeaderboardEntry {

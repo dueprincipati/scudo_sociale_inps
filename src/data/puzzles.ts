@@ -25,8 +25,8 @@ export const puzzlesList: Puzzle[] = [
     correctAnswer: "1898",
     hints: [
       { id: 1, text: "I 4 veri superpoteri sono: Pensione di Vecchiaia, Sostegno in Maternità/Paternità, Indennità di Malattia e Sicurezza Infortuni. Scarta i bonus futili come 'Netflix gratis' o 'Sconto Videogame'!" },
-      { id: 2, text: "Somma i numeri associati alle 4 tessere corrette: Pensione (500) + Malattia (400) + Infortuni (300) + Maternità (698). Fai bene i calcoli!" },
-      { id: 3, text: "La somma matematica è 1898. Curiosità: il 1898 è proprio l'anno in cui è nata la Previdenza Sociale in Italia!" }
+      { id: 2, text: "Somma i numeri associati alle 4 tessere corrette: cerca i valori più alti tra le tessere che rappresentano vere tutele e somma solo quelli." },
+      { id: 3, text: "La somma ti porterà a un anno storico importante per la nascita di alcune tutele previdenziali in Italia. Controlla bene i calcoli!" }
     ]
   },
   {
@@ -69,7 +69,10 @@ export const puzzlesList: Puzzle[] = [
       { id: 1, text: "La parola inizia con la lettera S e finisce con la A (o À). Ha 11 lettere in totale." },
       { id: 2, text: "È il sentimento di fratellanza e di aiuto reciproco che spinge le persone a sostenersi a vicenda nelle difficoltà. S-O-L-I-D-A-R-I-E-T-A." },
       { id: 3, text: "La parola da digitare (senza accenti, tutta in maiuscolo) è: SOLIDARIETA." }
-    ]
+    ],
+    mechanicData: {
+      maskPositions: [4, 5, 8]
+    }
   },
   {
     id: 6,
@@ -83,6 +86,106 @@ export const puzzlesList: Puzzle[] = [
       { id: 1, text: "È un pezzo di carta fondamentale. Senza di esso si lavora 'in nero'. Con esso, invece, sei un cittadino protetto a norma di legge." },
       { id: 2, text: "Inizia con 'CON...' e finisce con '...ATTO'. Si firma per stabilire quante ore devi lavorare, quanto sarai pagato e i tuoi contributi INPS." },
       { id: 3, text: "La super-parola per distruggere il Boss è CONTRATTO. Firmando un regolare contratto sblocchi il futuro sicuro!" }
+    ]
+  }
+  ,
+  {
+    id: 7,
+    title: "Enigma 7: Il Labirinto dei Contributi",
+    description: "La macchina del tempo ora vi colloca in un labirinto di conti: per procedere dovrete bilanciare entrate e uscite di più nodi contemporaneamente, trovando la parola che riassume la sostenibilità del sistema.",
+    educationalTidbit: "La sostenibilità del sistema pensionistico dipende dal rapporto tra lavoratori attivi e beneficiari. Politiche efficaci e contributi regolari mantengono il sistema in equilibrio e garantiscono pensioni future.",
+    mechanicType: "balance",
+    question: "Osserva i 8 nodi energetici e leggi le lettere illuminate nell'ordine corretto per scoprire il valore-guida del sistema (risposta in MAIUSCOLO).",
+    correctAnswer: "SOSTENIBILITA",
+    hints: [
+      { id: 1, text: "Conta quanti nodi rimangono attivi quando il flusso è stabile: ti aiuterà a ricostruire l'ordine delle lettere." },
+      { id: 2, text: "Pensa a lunghi orizzonti temporali e al rapporto entrate/uscite: è una parola lunga, senza spazi." },
+      { id: 3, text: "La parola è SOSTENIBILITA (senza accenti, in MAIUSCOLO)." }
+    ]
+  },
+
+  {
+    id: 8,
+    title: "Enigma 8: Il Cifrario della Previdenza",
+    description: "Un messaggio cifrato chiede di dimostrare che capite come funziona il sistema: decifrate per scoprire la parola chiave che apre il forziere.",
+    educationalTidbit: "I messaggi cifrati ricordano che la comunicazione chiara fra istituzioni e cittadini è fondamentale: i servizi funzionano se le regole sono comprensibili e accessibili.",
+    mechanicType: "decode",
+    question: "Decifra il testo con uno shift di 6 caratteri (Cifrario di Cesare). Il messaggio originale (ma trasformato) è: 'IUTZXOH'. Trova la parola in MAIUSCOLO.",
+    correctAnswer: "CONTRIB",
+    hints: [
+      { id: 1, text: "Prova a spostare ogni lettera 6 posizioni indietro nell'alfabeto (A<-G, B<-H ...)." },
+      { id: 2, text: "La parola decifrata è una radice di una parola più lunga: riguarda ciò che i lavoratori versano ogni mese." },
+      { id: 3, text: "La parola da inserire è CONTRIB (parte di CONTRIBUTI)." }
+    ]
+  },
+
+  {
+    id: 9,
+    title: "Enigma 9: L'Equazione del Futuro",
+    description: "Un vecchio registratore chiede di risolvere un calcolo composto che simula l'accumulo di contributi e interessi: dimostra che sai ragionare per passaggi logici.",
+    educationalTidbit: "I contributi investiti e l'interesse tecnico determinano la sostenibilità a lungo termine. Capire la matematica dietro ai conti pubblici aiuta a interpretare le scelte politiche.",
+    mechanicType: "icons",
+    question: "Seleziona ESATTAMENTE le 3 tessere che, sommate, danno il valore target 2650. Inserisci l'anno risultante come codice (4 cifre).",
+    correctAnswer: "2650",
+    hints: [
+      { id: 1, text: "Cerca tessere con valori alti e prova combinazioni da 3 elementi." },
+      { id: 2, text: "Pensa a 1500 + 800 + 350 = 2650 (esempio di combinazione possibile)." },
+      { id: 3, text: "La somma corretta è 2650: digita il numero per sbloccare il nodo." }
+    ]
+    ,
+    mechanicData: {
+      iconTessera: [
+        { id: 1, label: "Fondo Previdenziale Storico", val: 1500, isCorrect: true, power: "Base di contribuzione storica" },
+        { id: 2, label: "Fondi di Investimento Pubblico", val: 800, isCorrect: true, power: "Rendimento a lungo termine" },
+        { id: 3, label: "Accantonamenti Tecnici", val: 350, isCorrect: true, power: "Cuscinetto per le variabilità" },
+        { id: 4, label: "Bonus Temporaneo", val: 120, isCorrect: false, power: "Incentivo momentaneo, non contributivo" },
+        { id: 5, label: "Riserva Emergenza", val: 200, isCorrect: false, power: "Somma di standby" }
+      ]
+    }
+  },
+
+  {
+    id: 10,
+    title: "Enigma 10: Lo Specchio delle Politiche",
+    description: "Davanti a voi due politiche alternative: una aumenta le tasse per sostenere subito i benefici, l'altra incentiva l'occupazione per aumentare i contributi futuri. Quale parola sintetizza la scelta che preserva diritti e crescita insieme?",
+    educationalTidbit: "Bilanciare equità e crescita è la sfida delle politiche pubbliche. Strategie miste possono coniugare protezione sociale e sviluppo economico.",
+    mechanicType: "decode",
+    question: "Inserisci la parola che meglio rappresenta una soluzione bilanciata (MAIUSCOLO, senza accenti).",
+    correctAnswer: "INVESTIMENTO",
+    hints: [
+      { id: 1, text: "Pensa a una parola che parla di mettere risorse oggi per ottenere un ritorno domani." },
+      { id: 2, text: "È una parola usata sia in economia che nelle politiche pubbliche: INVESTIMENTO." },
+      { id: 3, text: "Digita INVESTIMENTO per procedere." }
+    ]
+  },
+
+  {
+    id: 11,
+    title: "Enigma 11: L'Assedio del Boss — Versione Avanzata",
+    description: "Il Signor Evasore è tornato con alleati: dovrete digitare due parole per sigillare il portale. La prima protegge il rapporto lavoro-stato, la seconda garantisce tutele contrattuali.",
+    educationalTidbit: "Contratti collettivi e regole chiare permettono di proteggere i lavoratori e combattere l'evasione. La contrattazione aiuta a definire tutele standard per tutti.",
+    mechanicType: "boss",
+    question: "Inserisci DUE parole separate da uno spazio: la prima è 'COLLETTIVO' e la seconda è 'CONTRATTO' (MAIUSCOLO).",
+    correctAnswer: "COLLETTIVO CONTRATTO",
+    hints: [
+      { id: 1, text: "Pensa a parole legate alla contrattazione e alla protezione di gruppo." },
+      { id: 2, text: "La soluzione combina 'COLLETTIVO' + 'CONTRATTO' per annientare l'Evasore e i suoi scagnozzi." },
+      { id: 3, text: "Digita esattamente: COLLETTIVO CONTRATTO" }
+    ]
+  },
+
+  {
+    id: 12,
+    title: "Enigma 12: La Sfida Finale — Prova Combinata",
+    description: "Per ultimare la rigenerazione dello Scudo dovrete risolvere un enigma che richiede logica, conoscenza e attenzione ai dettagli: combinazione di singole lettere, somma numerica e scelta istituzionale.",
+    educationalTidbit: "Le sfide complesse richiedono pluralità di strumenti: alfabetizzazione civica, competenze numeriche e capacità critica servono insieme per comprendere il sistema di protezione sociale.",
+    mechanicType: "decode",
+    question: "Combinazione finale: prendi la 1° lettera di 'PENSIONE', somma le cifre di 2026 e scegli l'articolo della Costituzione che garantisce l'assistenza (inserisci tutto unito, MAIUSCOLO).",
+    correctAnswer: "P10ART38",
+    hints: [
+      { id: 1, text: "1° lettera di 'PENSIONE' = P. Somma cifre 2+0+2+6 = 10. L'articolo chiave è 38." },
+      { id: 2, text: "Unisci tutto senza spazi: P + 10 + ART + 38 → P10ART38." },
+      { id: 3, text: "La stringa corretta da digitare è P10ART38." }
     ]
   }
 ];

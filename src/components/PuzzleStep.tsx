@@ -21,7 +21,7 @@ export const PuzzleStep: React.FC<PuzzleStepProps> = ({ puzzle, teamState, onSol
   // States for puzzle mechanics
   // Puzzle 2: Icons selection
   const [selectedIcons, setSelectedIcons] = useState<number[]>([]);
-  const iconTessera = [
+  const defaultIconTessera = [
     { id: 1, label: "Pensione di Vecchiaia", val: 500, isCorrect: true, power: "Reddito sicuro per i lavoratori anziani" },
     { id: 2, label: "Abbonamento Netflix Gratis", val: 120, isCorrect: false, power: "Solamente intrattenimento privato" },
     { id: 3, label: "Indennità di Malattia", val: 400, isCorrect: true, power: "Pagati anche quando non potete lavorare" },
@@ -31,6 +31,9 @@ export const PuzzleStep: React.FC<PuzzleStepProps> = ({ puzzle, teamState, onSol
     { id: 7, label: "Sostegno alla Maternità e Paternità", val: 698, isCorrect: true, power: "Congedo pagato per prendersi cura dei neonati" },
     { id: 8, label: "Bonus Viaggio Interstellare Gratis", val: 999, isCorrect: false, power: "Magari in futuro, ora non coperto!" }
   ];
+
+  // use puzzle-specific tessere if provided
+  const iconTessera = (puzzle.mechanicData && puzzle.mechanicData.iconTessera) ? puzzle.mechanicData.iconTessera : defaultIconTessera;
 
   // Puzzle 3: Constitution article selection
   const [selectedArticle, setSelectedArticle] = useState<number | null>(null);
@@ -62,12 +65,14 @@ export const PuzzleStep: React.FC<PuzzleStepProps> = ({ puzzle, teamState, onSol
     .filter(icon => selectedIcons.includes(icon.id))
     .reduce((sum, current) => sum + current.val, 0);
 
+  const iconTargetSum = puzzle.mechanicType === 'icons' ? Number((puzzle.correctAnswer || '').replace(/[^0-9]/g, '')) : null;
+
   const handleSubmit = (e?: React.FormEvent) => {
     if (e) e.preventDefault();
     setErrorFeedback(null);
 
     const formattedAnswer = userInput.trim().toUpperCase().replace(/[^A-Z0-9]/g, '');
-    const correctFormatted = puzzle.correctAnswer.trim().toUpperCase();
+    const correctFormatted = puzzle.correctAnswer.trim().toUpperCase().replace(/[^A-Z0-9]/g, '');
 
     if (puzzle.mechanicType === 'icons' && formattedAnswer !== correctFormatted) {
       setErrorFeedback(`Formula di sblocco digitata: "${userInput}" errata. Controlla la somma dei veri Superpoteri.`);
@@ -166,16 +171,13 @@ export const PuzzleStep: React.FC<PuzzleStepProps> = ({ puzzle, teamState, onSol
                 </div>
                 
                 {/* Visual Connector Flow */}
-                <div className="flex items-center gap-1 md:gap-2 text-slate-300 py-3">
-                  <div className="w-4 h-4 rounded-full bg-emerald-500 flex items-center justify-center text-white text-[9px] font-bold">P</div>
-                  <div className="h-0.5 w-6 bg-slate-300" />
-                  <div className="w-4 h-4 rounded-full bg-emerald-500 flex items-center justify-center text-white text-[9px] font-bold">A</div>
-                  <div className="h-0.5 w-6 bg-slate-300" />
-                  <div className="w-4 h-4 rounded-full bg-emerald-500 flex items-center justify-center text-white text-[9px] font-bold">T</div>
-                  <div className="h-0.5 w-6 bg-slate-300" />
-                  <div className="w-4 h-4 rounded-full bg-emerald-500 flex items-center justify-center text-white text-[9px] font-bold">T</div>
-                  <div className="h-0.5 w-6 bg-slate-300" />
-                  <div className="w-4 h-4 rounded-full bg-emerald-500 flex items-center justify-center text-white text-[9px] font-bold">O</div>
+                <div className="flex items-center gap-1 md:gap-2 text-slate-300 py-3 flex-wrap justify-center">
+                  {puzzle.correctAnswer.split("").map((ch, i) => (
+                    <React.Fragment key={i}>
+                      <div className="w-6 h-6 md:w-4 md:h-4 rounded-full bg-emerald-500 flex items-center justify-center text-white text-[10px] md:text-[9px] font-bold">{ch}</div>
+                      {i !== puzzle.correctAnswer.length - 1 && <div className="h-0.5 w-4 md:w-6 bg-slate-300" />}
+                    </React.Fragment>
+                  ))}
                 </div>
 
                 <div className="flex flex-col items-center p-3 bg-emerald-50 border border-emerald-105 rounded-xl text-center w-40">
@@ -225,18 +227,18 @@ export const PuzzleStep: React.FC<PuzzleStepProps> = ({ puzzle, teamState, onSol
                 })}
               </div>
 
-              <div className="bg-slate-50/80 border border-slate-200 rounded-2xl p-4 flex justify-between items-center mt-4">
+                <div className="bg-slate-50/80 border border-slate-200 rounded-2xl p-4 flex justify-between items-center mt-4">
                 <div>
                   <span className="text-xs text-slate-500 font-semibold p-1">Somma attuale dei Superpoteri attivati:</span>
                   <div className="text-2xl font-black text-slate-800">{selectedSum}</div>
                 </div>
-                {selectedSum === 1898 ? (
+                {iconTargetSum !== null && selectedSum === iconTargetSum ? (
                   <div className="flex items-center gap-2 text-emerald-600 text-sm font-bold bg-emerald-50 border border-emerald-110 px-3.5 py-1.5 rounded-xl">
                     <CheckCircle className="w-4 h-4 animate-bounce" /> Somma Corretta rilevata! Copia il numero sotto.
                   </div>
                 ) : (
                   <span className="text-xs text-amber-600 bg-amber-50 border border-amber-100 px-3 py-1.5 rounded-xl font-medium">
-                    {selectedSum > 1898 ? "Somma troppo alta. Hai incluso dei bonus non del Welfare!" : "Somma parziale... seleziona altre tessere corrette!"}
+                    {iconTargetSum !== null ? (selectedSum > iconTargetSum ? "Somma troppo alta. Hai incluso dei bonus non del Welfare!" : "Somma parziale... seleziona altre tessere corrette!") : "Seleziona le tessere corrette e verifica la somma!"}
                   </span>
                 )}
               </div>
@@ -453,8 +455,9 @@ export const PuzzleStep: React.FC<PuzzleStepProps> = ({ puzzle, teamState, onSol
               </p>
               
               <div className="flex justify-center flex-wrap gap-2 py-4 bg-slate-50 rounded-2xl border border-slate-100 font-bold text-lg">
-                {"SOLIDARIETA".split('').map((char, index) => {
-                  const isMissing = [4, 5, 8].includes(index);
+                {(puzzle.correctAnswer || '').split('').map((char, index) => {
+                  const maskPositions: number[] = (puzzle.mechanicData && puzzle.mechanicData.maskPositions) || [];
+                  const isMissing = maskPositions.includes(index);
                   return (
                     <div
                       key={index}
@@ -508,7 +511,7 @@ export const PuzzleStep: React.FC<PuzzleStepProps> = ({ puzzle, teamState, onSol
             <input
               id={`puzzle-answer-input`}
               type="text"
-              placeholder={puzzle.mechanicType === 'icons' ? "Es: 1898" : "Rispondi in MAIUSCOLO"}
+              placeholder={puzzle.mechanicType === 'icons' ? `Es: ${iconTargetSum ?? '1898'}` : "Rispondi in MAIUSCOLO"}
               value={userInput}
               onChange={(e) => {
                 setUserInput(e.target.value);
