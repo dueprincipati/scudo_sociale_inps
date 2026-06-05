@@ -1,63 +1,90 @@
-# Missione Previdenza: Escape Room Didattica sull'INPS
+# Missione Previdenza
 
-Benvenuto in **"Missione Previdenza: I Custodi del Tempo Welfare"**, un'escape room educativa interattiva espressamente concepita per i ragazzi della **Scuola Secondaria di Primo Grado (scuole medie, 11-14 anni)**. 
+**Missione Previdenza** è un'escape room educativa digitale pensata per la **Scuola Secondaria di Primo Grado**. L'obiettivo è aiutare i ragazzi a comprendere in modo coinvolgente il ruolo dell'INPS, i contributi previdenziali e i diritti del lavoro.
 
-Questo software nasce con fini strettamente pedagogici per coadiuvare i docenti nell'ambito dei moduli curricolari di **Educazione Civica e Cittadinanza Attiva**. L'obiettivo è presentare la **solidarietà sociale**, la **previdenza pubblica** e l'operato dell'**INPS** non come sterili imposizioni burocratiche per la terza età, ma come un indispensabile e vitale **"scudo collettivo"** a tutela dei diritti dell'uomo.
-
----
-
-## 🎯 Obiettivi Pedagogici e Struttura Didattica
-Il gioco accompagna gli studenti nel viaggio nel tempo dell'anno 2086 in cui, a causa della scomparsa dell'INPS, non esistono più protezioni sociali. Lo scopo del gioco è "riparare lo Scudo del Welfare" risolvendo **4 SFIDE LOGICHE** basate su concetti costituzionali di cittadinanza:
-
-1. **Il Patto tra Generazioni (Patto e Ripartizione):** Comprendere che i lavoratori attivi d'oggi finanziano l'assistenza e le pensioni correnti, costruendo una staffetta di solidarietà intergenerazionale.
-2. **Il Salvadanaio della Sicurezza (I Contributi):** Comprendere che i contributi non sono "tasse perse" ma tutele immediate (malattia, maternità, infortuni) e pensioni future.
-3. **La Catena del Welfare (La Solidarietà Sociale):** Sensibilizzare gli alunni sul dovere costituzionale (Art. 3, 38) di supportare i soggetti disabili, ammalati o inabili al lavoro.
-4. **Lo Scontro con il "Lavoro Nero" (I Diritti Legali):** Riconoscere l'inganno del lavoro irregolare, che promette ricchezza immediata a spese dei diritti fondamentali, sconfiggendo il boss finale tramite la stipula del **"Contratto"**.
+L'app trasporta gli studenti in un futuro distopico del **2086**, dove il temibile **"Signor Evasore"** ha cancellato l'INPS e il Welfare è in pericolo. Gli alunni devono risolvere puzzle didattici, restaurare il sistema di protezione sociale e dimostrare che il lavoro regolare e la solidarietà fanno la differenza.
 
 ---
 
-## 🏫 Come Condurre l'Attività in Aula (Guida per il Docente)
+## 📚 Contenuti e funzionalità principali
 
-### Fase 1: Introduzione e Presentazione (10 minuti)
-1. Spiega alla classe che svolgeranno un'avventura digitale sulla **solidarietà sociale** e sulle tutele del lavoratore.
-2. Organizza la classe in **squadre da 3 a 5 studenti** davanti a ciascun computer o tablet.
-3. Chiedi a ciascun gruppo di inserire un originale **Nome della Squadra** (es: *"I Cavalieri del Welfare"*, *"Lavoratori di Domani"*) e la classe scolastica d'appartenenza per registrarsi.
-4. Fai partire la missione. Il portale temporale darà un tempo massimo di **45 minuti** per preservare l'attenzione attiva e favorire l'adrenalina cooperativa.
-
-### Fase 2: Svolgimento del Gioco (30 minuti)
-* Gli studenti affronteranno i puzzle interattivi. Incoraggiali a cooperare e calcolare le risposte in squadra prima di utilizzare i suggerimenti del robot-guida **Guido**.
-* Nel menu in alto a destra, il docente può attivare l'**Area Docente** con una chiave speciale che consente di:
-  - Visionare le soluzioni esatte dei 4 enigmi per sbloccare la classe qualora un gruppo rimanesse impigliato.
-  - Saltare progressivamente le tappe nel caso in cui si voglia guidare il gioco collettivamente sulla LIM (Lavagna Interattiva Multimediale).
-
-### Fase 3: Stampa e Certificati (5 minuti)
-Nel menu **Area Docente** (tab *"Attestato di Cittadinanza"*), il docente può digitare il nome del team trionfante e della classe per generare e stampare un bellissimo **Attestato di Merito** professionale, utilizzabile per archiviare il traguardo d'Educazione Civica!
+- 12 missioni interattive a tema **Welfare, contribuzioni, sicurezza sociale e legalità del lavoro**
+- Interfaccia interattiva di gioco con punteggio in tempo reale
+- **Area Docente** per avere soluzioni, gestione rapida dello svolgimento e generazione di attestati
+- **Leaderboard locale** salvata in `localStorage`
+- Tempo limite di 45 minuti per stimolare lavoro di squadra e coinvolgimento
+- Realizzato con **React + Vite + TypeScript + Tailwind CSS**
 
 ---
 
-## 🔑 Soluzioni degli Enigmi (Per il Docente)
+## 🧩 Dettaglio delle challenge
 
-* **Missione 1 (Il Patto):** La risposta esatta è `PATTO`. Sancisce il patto tra generazioni.
-* **Missione 2 (Il Salvadanaio):** La risposta esatta è `1898`. È la somma delle tessere corrispondenti alle vere tutele INPS (Pensione = 500, Malattia = 400, Infortuni = 300, Maternità = 698) nonché l'anno di fondazione della previdenza sociale italiana.
-* **Missione 3 (La Catena):** La risposta esatta è `SOLIDARIETA` (senza accenti).
-* **Missione 4 (Boss Finale):** La risposta esatta è `CONTRATTO`. Sconfigge il virus del lavoro nero sbloccando la sala comandi.
+1. **Enigma 1: Il Flusso Generazionale** — esplora il "Patto tra Generazioni" e il funzionamento del sistema a ripartizione dell'INPS.
+2. **Enigma 2: Il Salvadanaio della Sicurezza** — scopri come i contributi finanziano malattia, maternità, infortunio e pensione.
+3. **Enigma 3: La Bussola della Costituzione** — riconosci il ruolo dell'Articolo 38 nella tutela dei cittadini più fragili.
+4. **Enigma 4: La Busta Paga e lo Scudo del Lavoro** — analizza la differenza tra lordo e netto e individua la NASpI come protezione per la disoccupazione.
+5. **Enigma 5: La Catena del Welfare** — comprendi il valore della solidarietà sociale nel mantenimento del sistema di protezione.
+6. **Enigma 6: Lo Scontro Finale con il Lavoro Nero** — affronta il "Signor Evasore" e impara perché un contratto regolare è il vero scudo dei lavoratori.
+7. **Enigma 7: Il Labirinto dei Contributi** — valuta la sostenibilità del sistema previdenziale in base al rapporto tra entrate e uscite.
+8. **Enigma 8: Il Cifrario della Previdenza** — decifra un messaggio per ricordare l'importanza della chiarezza nelle regole e nelle tutele.
+9. **Enigma 9: L'Equazione del Futuro** — risolvi un calcolo numerico che simula l'accumulo dei contributi nel tempo.
+10. **Enigma 10: Lo Specchio delle Politiche** — scegli tra opzioni di politica pubblica e comprendi l'importanza degli investimenti nel welfare.
+11. **Enigma 11: L'Assedio del Boss — Versione Avanzata** — scopri il ruolo dei contratti collettivi e della tutela di gruppo contro l'evasione.
+12. **Enigma 12: La Sfida Finale — Prova Combinata** — combini conoscenze civiche, competenze numeriche e istituzionali per chiudere la missione.
 
 ---
 
-## 🛠️ Note d'Avvio e Installazione
-L'applicazione è interamente programmata in modern **React / Vite con Tailwind CSS**, ed è dotata di sintesi sonora client-side Web Audio API. Per avviarla localmente durante lo sviluppo o adeguarla in futuro:
+## 🎯 A chi è rivolto
 
-1. Installa i pacchetti tramite npm:
+- Insegnanti di **Educazione Civica e Cittadinanza Attiva**
+- Classi delle **scuole medie** (11-14 anni)
+- Laboratori didattici, aule digitali o attività di team building
+
+---
+
+## 🚀 Come eseguire il progetto
+
+1. Installa le dipendenze:
    ```bash
    npm install
    ```
-2. Avvia il server di sviluppo sulla porta 3000:
+2. Avvia il server di sviluppo:
    ```bash
    npm run dev
    ```
-3. Compila l'applicazione per la distribuzione di produzione:
+3. Costruisci la versione di produzione:
    ```bash
    npm run build
    ```
+4. Visualizza la build locale con preview:
+   ```bash
+   npm run preview
+   ```
 
-*L'applicazione non richiede database esterni o chiavi API segrete per le funzioni essenziali di svolgimento, aggirando con successo i firewall o i sistemi di filtraggio presenti nella rete Internet delle istituzioni scolastiche d'Italia.*
+---
+
+## 🧪 Script disponibili
+
+- `npm run dev` — avvia l'app in sviluppo
+- `npm run build` — compila l'app per la produzione
+- `npm run preview` — esegue un server locale per visualizzare la build
+- `npm run clean` — rimuove la cartella `dist` e file generati
+- `npm run lint` — esegue TypeScript in modalità controllo senza output
+
+---
+
+## 📁 Struttura principale del repository
+
+- `src/App.tsx` — logica principale del gioco
+- `src/components/PuzzleStep.tsx` — singoli puzzle ed enigmi
+- `src/components/TeacherPanel.tsx` — pannello docente e attestati
+- `src/data/puzzles.ts` — definizione dei contenuti educativi
+- `src/utils/audio.ts` — gestione degli effetti sonori
+
+---
+
+## 💡 Note tecniche
+
+- L'app è pensata per funzionare in locale senza backend esterno
+- Tutti i progressi e la classifica sono memorizzati nel browser tramite `localStorage`
+- Il progetto è basato su React 19 e Vite 6
