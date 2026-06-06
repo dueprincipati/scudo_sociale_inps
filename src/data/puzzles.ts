@@ -76,8 +76,8 @@ export const puzzlesList: Puzzle[] = [
   },
   {
     id: 6,
-    title: "Enigma 6: Lo Scontro Finale con il Lavoro Nero",
-    description: "ATTENZIONE! Il Boss Finale 'Signor Evasore' è penetrato nella sala comandi con il suo virus 'Lavoro Nero'! Vi promette un mucchio di monete subito, ma ssshhh... non vi farà firmare alcun foglio e vi ruberà lo Scudo Sociale del Futuro. Se vi farete male sul lavoro o vi ammalerete, verrete gettati via senza un soldo!",
+    title: "Enigma 6: La Battaglia contro il Lavoro Nero",
+    description: "ATTENZIONE! Il Boss 'Signor Evasore' ha inviato il virus 'Lavoro Nero' per infettare la sala comandi! Vi promette un mucchio di monete subito, ma ssshhh... non vi farà firmare alcun foglio e vi ruberà lo Scudo Sociale del Futuro. Se vi farete male sul lavoro o vi ammalerete, verrete gettati via senza un soldo!",
     educationalTidbit: "Il lavoro nero è il nemico numero uno della società e di voi ragazzi. Lavorare in nero sembra conveniente all'inizio (vi danno soldi in contanti e non si pagano tasse immediate), ma in realtà vi toglie ogni protezione: zero contributi pensionistici, zero tutele se vi fate male, zero congedi e zero diritti. È illegale e distrugge il welfare di tutti, perché l'evasore non contribuisce alla scuola, agli ospedali e alle pensioni pubbliche!",
     mechanicType: "boss",
     question: "Per sigillare il portale e cacciare l'Evasore, dovrete attivare e registrare il documento legale che garantisce diritti, orari equi, paga minima e contributi automatici. Qual è il nome di questo 'Scudo d'Accordo' stipulato tra lavoratore e datore di lavoro? (C _ _ _ _ _ _ _ _)",
@@ -161,8 +161,8 @@ export const puzzlesList: Puzzle[] = [
 
   {
     id: 11,
-    title: "Enigma 11: L'Assedio del Boss — Versione Avanzata",
-    description: "Il Signor Evasore è tornato con alleati: dovrete digitare due parole per sigillare il portale. La prima protegge il rapporto lavoro-stato, la seconda garantisce tutele contrattuali.",
+    title: "Enigma 11: Lo Scontro Finale con l'Evasore",
+    description: "Il Signor Evasore sferra il suo attacco definitivo guidando un'orda di virus per distruggere il portale. Per sigillarlo e sconfiggerlo una volta per tutte, dovrete attivare lo Scudo Collettivo dello Stato.",
     educationalTidbit: "Contratti collettivi e regole chiare permettono di proteggere i lavoratori e combattere l'evasione. La contrattazione aiuta a definire tutele standard per tutti.",
     mechanicType: "boss",
     question: "Inserite DUE parole separate da uno spazio: la prima è 'COLLETTIVO' e la seconda è 'CONTRATTO' (MAIUSCOLO).",
