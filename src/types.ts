@@ -11,6 +11,7 @@ export interface Puzzle {
   mechanicType: 'balance' | 'icons' | 'decode' | 'boss' | 'payslip' | 'constitution';
   question: string;
   correctAnswer: string;
+  answerVariants?: string[];
   hints: Hint[];
   mechanicData?: any; // optional extra data per mechanic (e.g. icon tiles, letter masks)
 }

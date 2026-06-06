@@ -9,6 +9,22 @@ export const puzzlesList: Puzzle[] = [
     mechanicType: "balance",
     question: "Segui il flusso: se i LAVORATORI attivi versano ENERGIA nello Scudo e i PENSIONATI la ricevono, quale parola chiave sancisce questo legame indissolubile nel tempo? (Trovate la parola nascosta decifrando le lettere collegate al flusso attivo: P - A - T - T - O)",
     correctAnswer: "PATTO",
+    answerVariants: [
+      "PATTO TRA GENERAZIONI",
+      "PATTO GENERAZIONALE",
+      "IL PATTO TRA GENERAZIONI",
+      "IL PATTO GENERAZIONALE",
+      "PATTO TRA LE GENERAZIONI",
+      "IL PATTO TRA LE GENERAZIONI",
+      "PATTO INTERGENERAZIONALE",
+      "IL PATTO INTERGENERAZIONALE",
+      "PATTO TRA GENERAZIONE",
+      "IL PATTO TRA GENERAZIONE",
+      "PATTO TRA LE GENERAZIONE",
+      "IL PATTO TRA LE GENERAZIONE",
+      "PATTO DELLE GENERAZIONI",
+      "IL PATTO DELLE GENERAZIONI"
+    ],
     hints: [
       { id: 1, text: "Guarda le lettere illuminate lungo la linea di flusso che connette i lavoratori del presente con i cittadini del passato." },
       { id: 2, text: "La parola descrive un accordo d'onore e solidarietà... un '_____ tra Generazioni'." },
