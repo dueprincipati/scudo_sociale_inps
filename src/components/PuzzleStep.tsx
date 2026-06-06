@@ -45,6 +45,9 @@ export const PuzzleStep: React.FC<PuzzleStepProps> = ({ puzzle, teamState, onSol
   // Puzzle 5: Chain letters selection for Enigma 5
   const [chainLetters, setChainLetters] = useState<{ [key: number]: string }>({});
 
+  // Puzzle 6: Boss Fight contract clauses active
+  const [bossClauses, setBossClauses] = useState<string[]>([]);
+
   // Reset states when puzzle changes
   useEffect(() => {
     setUserInput(isSolved ? puzzle.correctAnswer : '');
@@ -57,15 +60,34 @@ export const PuzzleStep: React.FC<PuzzleStepProps> = ({ puzzle, teamState, onSol
     setSelectedArticle(isSolved && puzzle.mechanicType === 'constitution' ? Number(puzzle.correctAnswer) : null);
     setSelectedPayslipKey(isSolved && puzzle.mechanicType === 'payslip' ? 'inps' : null);
     setChainLetters(isSolved && puzzle.id === 5 ? { 4: 'D', 5: 'A', 8: 'E' } : {});
+    setBossClauses(isSolved && puzzle.mechanicType === 'boss' ? ['contributi', 'infortuni', 'ferie', 'paga'] : []);
   }, [puzzle, isSolved]);
 
   const handleIconToggle = (id: number) => {
     if (isSolved) return;
     playSound.playClick();
+    let nextIcons: number[];
     if (selectedIcons.includes(id)) {
-      setSelectedIcons(selectedIcons.filter(item => item !== id));
+      nextIcons = selectedIcons.filter(item => item !== id);
     } else {
-      setSelectedIcons([...selectedIcons, id]);
+      nextIcons = [...selectedIcons, id];
+    }
+    setSelectedIcons(nextIcons);
+    
+    // Auto-fill sum in userInput
+    const nextSum = iconTessera
+      .filter(icon => nextIcons.includes(icon.id))
+      .reduce((sum, current) => sum + current.val, 0);
+    setUserInput(nextSum > 0 ? String(nextSum) : '');
+  };
+
+  const handleBossClauseToggle = (clause: string) => {
+    if (isSolved) return;
+    playSound.playClick();
+    if (bossClauses.includes(clause)) {
+      setBossClauses(bossClauses.filter(c => c !== clause));
+    } else {
+      setBossClauses([...bossClauses, clause]);
     }
   };
 
@@ -167,32 +189,55 @@ export const PuzzleStep: React.FC<PuzzleStepProps> = ({ puzzle, teamState, onSol
         <div className="mb-8">
           {puzzle.mechanicType === 'balance' && (
             <div className="space-y-6">
-              <p className="text-sm text-slate-650 leading-relaxed">
-                La catena ha 5 nodi di energia fluttuanti. Ciascun nodo illumina una lettera quando il flusso è corretto:
+              <p className="text-xs md:text-sm text-slate-650 leading-relaxed">
+                La catena ha {puzzle.correctAnswer.length} nodi di energia fluttuanti. Ciascun nodo si attiva e si illumina quando digiti le lettere della chiave di sblocco:
               </p>
               
               {/* Graphic representation of generation flow */}
-              <div className="flex flex-col md:flex-row items-center gap-4 justify-center bg-slate-50 p-6 rounded-2xl border border-slate-100">
-                <div className="flex flex-col items-center p-3 bg-blue-50 border border-blue-105 rounded-xl text-center w-40">
-                  <span className="font-bold text-xs text-blue-800">Generazione A</span>
-                  <p className="text-[10px] text-slate-500">I Lavoratori di oggi</p>
-                  <span className="text-xl font-extrabold text-blue-600 mt-1 mt-2">Versano (XP)</span>
+              <div className="flex flex-col lg:flex-row items-center gap-6 justify-center bg-slate-50 p-6 rounded-2xl border border-slate-100 shadow-inner">
+                {/* Generation A Card */}
+                <div className="flex flex-col items-center p-4 bg-blue-50/80 border border-blue-100 rounded-2xl text-center w-full lg:w-44 shadow-sm">
+                  <span className="font-extrabold text-xs text-blue-800 tracking-wider uppercase">Generazione A</span>
+                  <p className="text-[10px] text-slate-500 mt-0.5">I Lavoratori di oggi</p>
+                  <span className="text-xs font-black text-blue-600 mt-3 bg-white px-2.5 py-1 rounded-lg border border-blue-200/50 shadow-sm">Versano (Contributi)</span>
                 </div>
                 
                 {/* Visual Connector Flow */}
-                <div className="flex items-center gap-1 md:gap-2 text-slate-300 py-3 flex-wrap justify-center">
-                  {puzzle.correctAnswer.split("").map((ch, i) => (
-                    <React.Fragment key={i}>
-                      <div className="w-6 h-6 md:w-4 md:h-4 rounded-full bg-emerald-500 flex items-center justify-center text-white text-[10px] md:text-[9px] font-bold">{ch}</div>
-                      {i !== puzzle.correctAnswer.length - 1 && <div className="h-0.5 w-4 md:w-6 bg-slate-300" />}
-                    </React.Fragment>
-                  ))}
+                <div className="flex items-center gap-1 md:gap-1.5 text-slate-300 py-3 flex-wrap justify-center max-w-lg">
+                  {puzzle.correctAnswer.split("").map((ch, i) => {
+                    const cleanUserInput = userInput.toUpperCase().replace(/[^A-Z0-9]/g, '');
+                    const charAtPos = cleanUserInput[i] || '';
+                    const hasInput = charAtPos !== '';
+                    return (
+                      <React.Fragment key={i}>
+                        <div className={`w-8 h-8 md:w-9 md:h-9 rounded-full flex items-center justify-center font-bold text-xs md:text-sm transition-all duration-300 ${
+                          isSolved
+                            ? 'bg-emerald-500 text-white shadow-md border border-emerald-400'
+                            : hasInput
+                              ? 'bg-blue-500 text-white shadow-md border border-blue-400 animate-pulse'
+                              : 'bg-white text-slate-400 border border-slate-300 border-dashed hover:border-slate-400'
+                        }`}>
+                          {isSolved ? ch : (charAtPos || '?')}
+                        </div>
+                        {i !== puzzle.correctAnswer.length - 1 && (
+                          <div className={`h-0.5 w-3 md:w-4 transition-colors duration-300 ${
+                            isSolved
+                              ? 'bg-emerald-400'
+                              : i < cleanUserInput.length
+                                ? 'bg-blue-400'
+                                : 'bg-slate-200'
+                          }`} />
+                        )}
+                      </React.Fragment>
+                    );
+                  })}
                 </div>
 
-                <div className="flex flex-col items-center p-3 bg-emerald-50 border border-emerald-105 rounded-xl text-center w-40">
-                  <span className="font-bold text-xs text-emerald-800">Generazione B</span>
-                  <p className="text-[10px] text-slate-500">I Pensionati di oggi</p>
-                  <span className="text-xl font-extrabold text-emerald-600 mt-2">Ricevono lo Scudo</span>
+                {/* Generation B Card */}
+                <div className="flex flex-col items-center p-4 bg-emerald-50/80 border border-emerald-100 rounded-2xl text-center w-full lg:w-44 shadow-sm">
+                  <span className="font-extrabold text-xs text-emerald-800 tracking-wider uppercase">Generazione B</span>
+                  <p className="text-[10px] text-slate-500 mt-0.5">I Pensionati di oggi</p>
+                  <span className="text-xs font-black text-emerald-600 mt-3 bg-white px-2.5 py-1 rounded-lg border border-emerald-200 shadow-sm">Ricevono lo Scudo</span>
                 </div>
               </div>
             </div>
@@ -200,31 +245,45 @@ export const PuzzleStep: React.FC<PuzzleStepProps> = ({ puzzle, teamState, onSol
 
           {puzzle.mechanicType === 'icons' && (
             <div className="space-y-6">
-              <p className="text-xs md:text-sm text-slate-600 leading-relaxed mb-4">
+              <p className="text-xs md:text-sm text-slate-650 leading-relaxed mb-4">
                 Fai click su ciascun superpotere per sbloccarlo o toglierlo. Se selezioni correttamente solo i veri campi d'azione assicurati dell'INPS, sommerai i giusti anni e scoprirai l'anno misterioso!
               </p>
               
               <div className="grid sm:grid-cols-2 md:grid-cols-4 gap-3">
                 {iconTessera.map((item) => {
                   const isChecked = selectedIcons.includes(item.id);
+                  const isCorrect = item.isCorrect;
                   return (
                     <button
                       key={item.id}
+                      type="button"
                       onClick={() => handleIconToggle(item.id)}
                       className={`flex flex-col items-start p-4 rounded-2xl border-2 transition-all cursor-pointer text-left h-full justify-between h-36 ${
                         isChecked
-                          ? 'border-blue-500 bg-blue-50/60 shadow-md ring-2 ring-blue-500/20'
-                          : 'border-slate-100 bg-slate-50/50 hover:bg-slate-50'
+                          ? isCorrect
+                            ? 'border-emerald-500 bg-emerald-50/50 shadow-md ring-2 ring-emerald-500/20'
+                            : 'border-rose-400 bg-rose-50/50 shadow-md ring-2 ring-rose-400/20'
+                          : 'border-slate-100 bg-slate-50/50 hover:bg-slate-50 hover:border-slate-200'
                       }`}
                     >
                       <div className="w-full">
                         <div className="flex items-center justify-between mb-2">
-                          {item.id === 1 && <Award className="w-5 h-5 text-amber-500" />}
-                          {item.id === 3 && <Heart className="w-5 h-5 text-red-500" />}
-                          {item.id === 5 && <ShieldCheck className="w-5 h-5 text-emerald-500" />}
-                          {item.id === 7 && <Calendar className="w-5 h-5 text-violet-500" />}
-                          {!item.isCorrect && <HelpCircle className="w-5 h-5 text-slate-400" />}
-                          <span className="text-xs font-mono font-bold bg-slate-200/60 text-slate-600 px-1.5 py-0.5 rounded">
+                          {item.id === 1 && <Award className={`w-5 h-5 ${isChecked ? 'text-emerald-600' : 'text-amber-500'}`} />}
+                          {item.id === 3 && <Heart className={`w-5 h-5 ${isChecked ? 'text-emerald-600' : 'text-red-500'}`} />}
+                          {item.id === 5 && <ShieldCheck className={`w-5 h-5 ${isChecked ? 'text-emerald-600' : 'text-emerald-500'}`} />}
+                          {item.id === 7 && <Calendar className={`w-5 h-5 ${isChecked ? 'text-emerald-600' : 'text-violet-500'}`} />}
+                          {!item.isCorrect && (
+                            isChecked 
+                              ? <AlertTriangle className="w-5 h-5 text-rose-500 animate-pulse" />
+                              : <HelpCircle className="w-5 h-5 text-slate-400" />
+                          )}
+                          <span className={`text-[10px] font-mono font-bold px-1.5 py-0.5 rounded ${
+                            isChecked
+                              ? isCorrect
+                                ? 'bg-emerald-100 text-emerald-800'
+                                : 'bg-rose-100 text-rose-800'
+                              : 'bg-slate-200/60 text-slate-600'
+                          }`}>
                             +{item.val}
                           </span>
                         </div>
@@ -236,18 +295,56 @@ export const PuzzleStep: React.FC<PuzzleStepProps> = ({ puzzle, teamState, onSol
                 })}
               </div>
 
-                <div className="bg-slate-50/80 border border-slate-200 rounded-2xl p-4 flex justify-between items-center mt-4">
+              {/* Warning Card for Selected Incorrect Tiles */}
+              {selectedIcons.some(id => !iconTessera.find(t => t.id === id)?.isCorrect) && (
+                <div className="bg-rose-50 border border-rose-200 rounded-xl p-4 space-y-2 text-xs text-rose-800 animate-fade-in">
+                  <div className="flex items-center gap-2 font-bold text-rose-900 border-b border-rose-100 pb-1.5">
+                    <ShieldAlert className="w-4 h-4 text-rose-600 animate-bounce" />
+                    <span>RILIEVO ERRORI: TESSERE NON REGOLAMENTARI</span>
+                  </div>
+                  <ul className="list-disc pl-4 space-y-1">
+                    {selectedIcons.map(id => {
+                      const item = iconTessera.find(t => t.id === id);
+                      if (item && !item.isCorrect) {
+                        let explanation = "";
+                        if (item.id === 2) explanation = "Netflix è intrattenimento commerciale privato, non una forma di previdenza o assistenza sociale pubblica.";
+                        if (item.id === 4) explanation = "I punti pizza sono promozioni commerciali dei locali, non coperture dello Stato contro i rischi lavorativi.";
+                        if (item.id === 6) explanation = "Gli sconti sui videogiochi sono incentivi commerciali privati, non diritti sociali costituzionali.";
+                        if (item.id === 8) explanation = "I viaggi nello spazio sono iniziative commerciali o scientifiche non coperte dal welfare pubblico dell'INPS.";
+                        return (
+                          <li key={id} className="leading-relaxed">
+                            <strong>{item.label}</strong>: {explanation}
+                          </li>
+                        );
+                      }
+                      return null;
+                    })}
+                  </ul>
+                </div>
+              )}
+
+              {/* Calculator Panel */}
+              <div className="bg-slate-50 border border-slate-200 rounded-2xl p-4 flex flex-col sm:flex-row gap-3 justify-between items-center mt-4 shadow-sm">
                 <div>
-                  <span className="text-xs text-slate-500 font-semibold p-1">Somma attuale dei Superpoteri attivati:</span>
-                  <div className="text-2xl font-black text-slate-800">{selectedSum}</div>
+                  <span className="text-xs text-slate-500 font-semibold block sm:inline mr-2">Valore totale dei Superpoteri attivati:</span>
+                  <div className="text-2xl font-black text-slate-800 inline-block align-middle">{selectedSum}</div>
                 </div>
                 {iconTargetSum !== null && selectedSum === iconTargetSum ? (
-                  <div className="flex items-center gap-2 text-emerald-600 text-sm font-bold bg-emerald-50 border border-emerald-110 px-3.5 py-1.5 rounded-xl">
-                    <CheckCircle className="w-4 h-4 animate-bounce" /> Somma Corretta rilevata! Copia il numero sotto.
+                  <div className="flex items-center gap-2 text-emerald-700 text-xs md:text-sm font-bold bg-emerald-50 border border-emerald-250 px-3.5 py-1.5 rounded-xl">
+                    <CheckCircle className="w-4 h-4 animate-bounce text-emerald-600" />
+                    <span>Configurazione Corretta! La chiave {selectedSum} è pronta. Clicca su "Invio Chiave"!</span>
                   </div>
                 ) : (
-                  <span className="text-xs text-amber-600 bg-amber-50 border border-amber-100 px-3 py-1.5 rounded-xl font-medium">
-                    {iconTargetSum !== null ? (selectedSum > iconTargetSum ? "Somma troppo alta. Hai incluso dei bonus non del Welfare!" : "Somma parziale... seleziona altre tessere corrette!") : "Seleziona le tessere corrette e verifica la somma!"}
+                  <span className="text-xs font-semibold px-3 py-1.5 rounded-xl border leading-relaxed text-center sm:text-left">
+                    {iconTargetSum !== null && selectedSum > iconTargetSum ? (
+                      <span className="text-rose-600 bg-rose-50 border-rose-200 block">
+                        Somma troppo alta ({selectedSum} &gt; 1898). Hai incluso dei servizi non appartenenti al Welfare!
+                      </span>
+                    ) : (
+                      <span className="text-amber-700 bg-amber-50 border-amber-100 block">
+                        Somma parziale ({selectedSum} / 1898). Seleziona solo le 4 tessere corrette.
+                      </span>
+                    )}
                   </span>
                 )}
               </div>
@@ -301,29 +398,48 @@ export const PuzzleStep: React.FC<PuzzleStepProps> = ({ puzzle, teamState, onSol
                   }
                 ].map((art) => {
                   const isSelected = selectedArticle === art.num;
+                  const isCorrect = art.isTarget;
+                  const isDimmed = isSolved && !isCorrect;
+                  const isSolvedTarget = isSolved && isCorrect;
                   return (
                     <button
                       key={art.num}
                       type="button"
+                      disabled={isSolved}
                       onClick={() => {
                         if (isSolved) return;
                         playSound.playClick();
                         setSelectedArticle(art.num);
                         if (art.isTarget) {
                           setUserInput("38");
+                        } else {
+                          setUserInput("");
                         }
                       }}
-                      className={`flex flex-col items-start p-4 rounded-xl border-2 transition-all cursor-pointer text-left h-full ${
-                        isSelected
-                          ? art.isTarget 
-                            ? 'border-emerald-500 bg-emerald-50/60 ring-2 ring-emerald-500/20 shadow-sm'
-                            : 'border-blue-500 bg-blue-50/60 ring-2 ring-blue-500/20'
-                          : 'border-slate-100 bg-slate-50/50 hover:bg-slate-50'
+                      className={`flex flex-col items-start p-4 rounded-xl border-2 transition-all text-left h-full ${
+                        isSolvedTarget
+                          ? 'border-emerald-500 bg-emerald-50 ring-2 ring-emerald-500/25 shadow-md cursor-default'
+                          : isDimmed
+                            ? 'opacity-40 border-slate-100 bg-slate-50/20 cursor-not-allowed scale-95'
+                            : isSelected
+                              ? isCorrect
+                                ? 'border-emerald-500 bg-emerald-50/60 ring-2 ring-emerald-500/20 shadow-sm cursor-pointer'
+                                : 'border-blue-500 bg-blue-50/60 ring-2 ring-blue-500/20 shadow-sm cursor-pointer'
+                              : 'border-amber-200/50 bg-amber-50/10 hover:bg-amber-50/30 hover:border-amber-300/60 cursor-pointer'
                       }`}
                     >
                       <div className="flex items-center gap-2 mb-2 w-full border-b border-slate-100 pb-1.5">
-                        <BookOpen className={`w-4 h-4 ${isSelected ? 'text-blue-600' : 'text-slate-400'}`} />
+                        {isSolvedTarget ? (
+                          <ShieldCheck className="w-4 h-4 text-emerald-600 animate-pulse" />
+                        ) : (
+                          <BookOpen className={`w-4 h-4 ${isSelected ? 'text-blue-600' : 'text-amber-700/60'}`} />
+                        )}
                         <span className="font-bold text-slate-800 text-xs">{art.title}</span>
+                        {isSolvedTarget && (
+                          <span className="text-[8px] bg-emerald-100 text-emerald-800 font-extrabold px-1 rounded-md ml-auto uppercase tracking-wide">
+                            Attivo
+                          </span>
+                        )}
                       </div>
                       <p className="text-[10px] text-slate-600 font-medium leading-tight mb-2 italic">
                         "{art.text}"
@@ -331,8 +447,8 @@ export const PuzzleStep: React.FC<PuzzleStepProps> = ({ puzzle, teamState, onSol
                       {isSelected && (
                         <div className={`text-[10px] p-2 rounded border mt-auto w-full ${
                           art.isTarget 
-                            ? 'bg-emerald-105 border-emerald-200 text-emerald-800 font-extrabold'
-                            : 'bg-blue-105 border-blue-200 text-blue-800 font-semibold'
+                            ? 'bg-emerald-100 border-emerald-250 text-emerald-800 font-extrabold shadow-sm'
+                            : 'bg-blue-100 border-blue-200 text-blue-800 font-semibold'
                         }`}>
                           {art.desc}
                         </div>
@@ -665,23 +781,156 @@ export const PuzzleStep: React.FC<PuzzleStepProps> = ({ puzzle, teamState, onSol
           )}
 
           {puzzle.mechanicType === 'boss' && (
-            <div className="space-y-4 relative overflow-hidden bg-red-50 border-2 border-red-200 rounded-2xl p-5 mt-2">
-              <div className="absolute top-0 right-0 p-4 shrink-0">
-                <ShieldAlert className="w-16 h-16 text-red-500/20 animate-spin" />
+            <div className="space-y-6">
+              {/* Split Screen Battle Dashboard */}
+              <div className="grid md:grid-cols-2 gap-6 mt-2">
+                
+                {/* Left Side: IL NEMICO (Signor Evasore) */}
+                <div className="bg-red-50 border-2 border-red-200 rounded-3xl p-5 relative overflow-hidden shadow-sm flex flex-col justify-between min-h-[200px]">
+                  <div className="absolute top-0 right-0 p-3 opacity-10">
+                    <ShieldAlert className="w-24 h-24 text-red-700 animate-spin" style={{ animationDuration: '20s' }} />
+                  </div>
+
+                  <div>
+                    <div className="flex items-center gap-2 mb-3">
+                      <AlertTriangle className="w-5 h-5 text-red-650 animate-pulse" />
+                      <h4 className="font-black text-red-800 text-xs tracking-wider uppercase">MINACCIA: VIRUS LAVORO NERO</h4>
+                    </div>
+
+                    <div className="flex items-center gap-3 bg-white/60 rounded-2xl p-3 border border-red-100 mb-4">
+                      <div className="w-8 h-8 rounded-full bg-red-600 text-white flex items-center justify-center font-black text-sm shadow-sm">
+                        😈
+                      </div>
+                      <div className="flex-1">
+                        <strong className="text-xs text-red-950 font-extrabold">Signor Evasore</strong>
+                        <p className="text-[9px] text-red-750 italic leading-tight">"Ti do 50 euro oggi... il contratto non serve!"</p>
+                      </div>
+                    </div>
+
+                    {/* Boss Health Bar */}
+                    <div className="space-y-1">
+                      <div className="flex justify-between text-[10px] font-bold text-red-900">
+                        <span>Punti Vita Virus:</span>
+                        <span className="font-mono">{isSolved ? 0 : (100 - bossClauses.length * 20)}% HP</span>
+                      </div>
+                      <div className="w-full bg-red-200/50 rounded-full h-3 border border-red-300 overflow-hidden shadow-inner">
+                        <div 
+                          className="bg-red-600 h-full transition-all duration-500 ease-out"
+                          style={{ width: `${isSolved ? 0 : (100 - bossClauses.length * 20)}%` }}
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="text-[10px] text-red-800/80 font-medium leading-relaxed border-t border-red-200/60 pt-3 mt-4">
+                    ⚠️ <em>Senza un contratto regolare perdi pensione, malattia pagata e sicurezza. Proteggiti!</em>
+                  </div>
+                </div>
+
+                {/* Right Side: IL SIGILLO (Il Contratto) */}
+                <div className="bg-amber-50/20 border-2 border-amber-200 rounded-3xl p-5 shadow-sm font-sans flex flex-col justify-between min-h-[200px]">
+                  <div>
+                    <div className="flex items-center gap-2 mb-3 border-b border-amber-250 pb-2">
+                      <FileText className="w-4 h-4 text-amber-650" />
+                      <h4 className="font-extrabold text-amber-900 text-xs tracking-wider uppercase">BOZZA CONTRATTO REGOLARE</h4>
+                    </div>
+
+                    {/* Clipboard template details */}
+                    <div className="bg-white/95 rounded-xl p-3 border border-amber-200 text-[10px] space-y-1 font-mono text-slate-700 shadow-inner">
+                      <div><span className="text-slate-400">DIPENDENTE:</span> <strong className="text-slate-800">ROSSI MARIO</strong></div>
+                      <div><span className="text-slate-400">INQUADRAMENTO:</span> <strong className="text-slate-800">APPRENDISTA IMPIEGATO</strong></div>
+                      <div>
+                        <span className="text-slate-400">TIPO ACCORDO:</span>{' '}
+                        {isSolved ? (
+                          <span className="text-emerald-700 font-black bg-emerald-100 px-1 rounded">CONTRATTO</span>
+                        ) : (
+                          <span className="text-blue-600 font-bold bg-blue-50 px-1 rounded animate-pulse">[ IN ATTESA DI FIRMA ]</span>
+                        )}
+                      </div>
+                      <div className="pt-2 border-t border-dashed border-amber-200 space-y-0.5 text-[9px]">
+                        <div className="flex justify-between">
+                          <span>1. Contributi INPS:</span>
+                          <span className={bossClauses.includes('contributi') || isSolved ? 'text-emerald-650 font-bold' : 'text-slate-400'}>
+                            {bossClauses.includes('contributi') || isSolved ? '✓ ATTIVATO' : '✗ DISATTIVO'}
+                          </span>
+                        </div>
+                        <div className="flex justify-between">
+                          <span>2. Assicurazione INAIL:</span>
+                          <span className={bossClauses.includes('infortuni') || isSolved ? 'text-emerald-650 font-bold' : 'text-slate-400'}>
+                            {bossClauses.includes('infortuni') || isSolved ? '✓ ATTIVATO' : '✗ DISATTIVO'}
+                          </span>
+                        </div>
+                        <div className="flex justify-between">
+                          <span>3. Tutela Malattia/Ferie:</span>
+                          <span className={bossClauses.includes('ferie') || isSolved ? 'text-emerald-650 font-bold' : 'text-slate-400'}>
+                            {bossClauses.includes('ferie') || isSolved ? '✓ ATTIVATO' : '✗ DISATTIVO'}
+                          </span>
+                        </div>
+                        <div className="flex justify-between">
+                          <span>4. Paga Minima:</span>
+                          <span className={bossClauses.includes('paga') || isSolved ? 'text-emerald-650 font-bold' : 'text-slate-400'}>
+                            {bossClauses.includes('paga') || isSolved ? '✓ ATTIVATO' : '✗ DISATTIVO'}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Stamp/Lock Status */}
+                  <div className="mt-4 pt-2 border-t border-amber-100 flex justify-center">
+                    {isSolved ? (
+                      <span className="bg-emerald-100 border-2 border-dashed border-emerald-500 text-emerald-700 text-xs font-black uppercase px-4 py-1.5 rounded-xl rotate-[-3deg] shadow-sm tracking-widest animate-bounce">
+                        印 FIRMATO & TUTELATO
+                      </span>
+                    ) : (
+                      <span className="text-[10px] text-amber-700 font-semibold italic text-center">
+                        {bossClauses.length < 4 
+                          ? `Attiva le 4 tessere sotto per blindare l'accordo (${bossClauses.length}/4)` 
+                          : "Tutele pronte! Firma digitando la parola chiave sotto."
+                        }
+                      </span>
+                    )}
+                  </div>
+                </div>
+
               </div>
-              <div className="flex items-center gap-3 mb-2">
-                <AlertTriangle className="w-6 h-6 text-red-600" />
-                <h4 className="font-extrabold text-red-800 text-sm">MINACCIA IN CORSO: INFEZIONE DA LAVORO NERO</h4>
+
+              {/* Tessere/Clausole Checkboxes (Clickable buttons) */}
+              <div className="space-y-2">
+                <span className="text-xs font-black text-slate-500 uppercase tracking-wide">Attiva le Tutele Contrattuali obbligatorie per danneggiare il virus:</span>
+                <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-2.5">
+                  {[
+                    { id: 'contributi', label: 'Contributi INPS', desc: 'Garantisce la futura pensione e tutele sociali.' },
+                    { id: 'infortuni', label: 'Copertura INAIL', desc: 'Ti cura e ti indennizza se ti fai male lavorando.' },
+                    { id: 'ferie', label: 'Ferie & Malattia', desc: 'Resti pagato a casa se ti ammali o ti riposi.' },
+                    { id: 'paga', label: 'Paga Minima', desc: 'Garantisce lo stipendio equo stabilito per legge.' }
+                  ].map(clause => {
+                    const isActive = bossClauses.includes(clause.id) || isSolved;
+                    return (
+                      <button
+                        key={clause.id}
+                        type="button"
+                        disabled={isSolved}
+                        onClick={() => handleBossClauseToggle(clause.id)}
+                        className={`p-3 rounded-xl border text-left flex flex-col justify-between transition-all cursor-pointer ${
+                          isActive
+                            ? 'border-emerald-500 bg-emerald-50/50 shadow-sm'
+                            : 'border-slate-200 bg-slate-50/50 hover:bg-slate-50 hover:border-slate-300'
+                        }`}
+                      >
+                        <div className="flex items-center justify-between w-full mb-1">
+                          <strong className="text-slate-800 text-[11px] font-extrabold leading-tight">{clause.label}</strong>
+                          <div className={`w-4 h-4 rounded-md border flex items-center justify-center ${isActive ? 'bg-emerald-500 border-emerald-600 text-white' : 'border-slate-300 bg-white'}`}>
+                            {isActive && <span className="text-[10px] font-bold">✓</span>}
+                          </div>
+                        </div>
+                        <p className="text-[9px] text-slate-500 leading-normal">{clause.desc}</p>
+                      </button>
+                    );
+                  })}
+                </div>
               </div>
-              <p className="text-xs md:text-sm text-red-700 leading-relaxed font-semibold">
-                Il virus "Lavoro Nero" cancella le regole e i diritti! Ti sussurra all'orecchio: <span className="underline italic">"Prendi 50 euro oggi e non chiedere certificati, a che ti serve firmare?"</span>. Ma non cadere nella trappola! Senza diritti sei nudo dinanzi alle disgrazie.
-              </p>
-              
-              <div className="grid gap-2 text-xs font-mono text-red-900 border-t border-red-200 pt-3">
-                <div className="flex items-center gap-1.5"><HeartCrack className="w-3.5 h-3.5 text-red-600" /> Malattia non pagata: se hai la febbre, perdi lo stipendio.</div>
-                <div className="flex items-center gap-1.5"><HeartCrack className="w-3.5 h-3.5 text-red-600" /> Nessun contributo: a 65 anni non avrai alcuna pensione per riposare.</div>
-                <div className="flex items-center gap-1.5"><HeartCrack className="w-3.5 h-3.5 text-red-600" /> Sicurezza zero: se ti fai male lavorando, sarai abbandonato.</div>
-              </div>
+
             </div>
           )}
         </div>
@@ -697,7 +946,13 @@ export const PuzzleStep: React.FC<PuzzleStepProps> = ({ puzzle, teamState, onSol
               <input
                 id={`puzzle-answer-input`}
                 type="text"
-                placeholder={puzzle.mechanicType === 'icons' ? `Es: ${iconTargetSum ?? '1898'}` : "Rispondi in MAIUSCOLO"}
+                placeholder={
+                  puzzle.mechanicType === 'icons'
+                    ? `Es: ${iconTargetSum ?? '1898'}`
+                    : puzzle.mechanicType === 'boss' && bossClauses.length < 4
+                      ? "Attiva prima tutte le 4 tessere delle tutele..."
+                      : "Rispondi in MAIUSCOLO"
+                }
                 value={userInput}
                 onChange={(e) => {
                   const val = e.target.value;
@@ -715,7 +970,7 @@ export const PuzzleStep: React.FC<PuzzleStepProps> = ({ puzzle, teamState, onSol
                   }
                 }}
                 className={`w-full bg-slate-50 border-2 border-slate-200 hover:border-slate-300 focus:border-blue-500 rounded-2xl pl-4 pr-16 py-3 text-slate-800 font-bold focus:outline-none transition-all placeholder:text-slate-400 placeholder:font-normal uppercase ${isSolved ? 'border-emerald-300 bg-emerald-50/20' : ''}`}
-                disabled={successAnim || isSolved}
+                disabled={successAnim || isSolved || (puzzle.mechanicType === 'boss' && bossClauses.length < 4)}
                 autoComplete="off"
               />
               {userInput && !successAnim && !isSolved && (
@@ -742,7 +997,7 @@ export const PuzzleStep: React.FC<PuzzleStepProps> = ({ puzzle, teamState, onSol
                   ? 'bg-emerald-600 hover:bg-emerald-700 text-white cursor-default' 
                   : 'bg-blue-600 hover:bg-blue-700 text-white cursor-pointer disabled:opacity-50'
               }`}
-              disabled={successAnim || isSolved}
+              disabled={successAnim || isSolved || (puzzle.mechanicType === 'boss' && bossClauses.length < 4)}
             >
               {isSolved ? (
                 <>✓ Risolto</>
