@@ -1,6 +1,10 @@
 import { describe, test, expect } from 'vitest';
 import { puzzlesList } from './puzzles';
 
+/** Mirrors the cleanStr normalization in PuzzleStep.tsx */
+const cleanStr = (s: string) =>
+  s.trim().toUpperCase().replace(/[^A-Z0-9]/g, '');
+
 describe('Missione Previdenza - Puzzles Validation', () => {
   test('puzzles list should contain exactly 12 items', () => {
     expect(puzzlesList).toHaveLength(12);
@@ -25,6 +29,43 @@ describe('Missione Previdenza - Puzzles Validation', () => {
     expect(p1).toBeDefined();
     expect(p1?.correctAnswer).toBe('PATTO');
     expect(p1?.mechanicType).toBe('balance');
+  });
+
+  test('Puzzle 1 should have 14 answer variants defined', () => {
+    const p1 = puzzlesList.find(p => p.id === 1);
+    expect(p1?.answerVariants).toBeInstanceOf(Array);
+    expect(p1?.answerVariants).toHaveLength(14);
+  });
+
+  test('Puzzle 1 all answer variants should normalize and match correctly', () => {
+    const p1 = puzzlesList.find(p => p.id === 1);
+    expect(p1).toBeDefined();
+
+    const allAccepted = [p1!.correctAnswer, ...(p1!.answerVariants ?? [])];
+    const cleanedCorrect = cleanStr(p1!.correctAnswer);
+
+    allAccepted.forEach((variant) => {
+      const cleaned = cleanStr(variant);
+      const isMatch =
+        cleaned === cleanedCorrect ||
+        (p1!.answerVariants ?? []).some(v => cleanStr(v) === cleaned);
+      expect(isMatch, `Variant "${variant}" should be accepted`).toBe(true);
+    });
+  });
+
+  test('Puzzle 1 normalized variants should not accidentally match wrong answers', () => {
+    const p1 = puzzlesList.find(p => p.id === 1);
+    expect(p1).toBeDefined();
+    const cleanedCorrect = cleanStr(p1!.correctAnswer);
+    const cleanedVariants = (p1!.answerVariants ?? []).map(cleanStr);
+
+    const wrongAnswers = ['PENSIONE', 'CONTRIBUTI', 'NASPI', 'CONTRATTO'];
+    wrongAnswers.forEach((wrong) => {
+      const cleaned = cleanStr(wrong);
+      const isMatch =
+        cleaned === cleanedCorrect || cleanedVariants.includes(cleaned);
+      expect(isMatch, `"${wrong}" should NOT be accepted for Enigma 1`).toBe(false);
+    });
   });
 
   test('Puzzle 2 (icons) correct sum should equal 1898', () => {

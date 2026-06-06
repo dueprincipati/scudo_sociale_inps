@@ -328,14 +328,14 @@ export default function App() {
     <div className="min-h-screen bg-slate-50 text-slate-800 flex flex-col font-sans select-none antialiased">
       
       {/* Upper Navigation Rail */}
-      <header className="bg-white border-b border-slate-200 py-4 px-6 md:px-12 flex justify-between items-center sticky top-0 z-50 shadow-sm print:hidden">
+      <header className="bg-white border-b border-slate-200 py-2.5 px-6 md:px-8 flex justify-between items-center sticky top-0 z-50 shadow-sm print:hidden">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 bg-blue-650 hover:scale-105 rounded-xl flex items-center justify-center text-white font-extrabold shadow-md transition-all">
+          <div className="w-9 h-9 bg-blue-650 hover:scale-105 rounded-xl flex items-center justify-center text-white font-extrabold shadow-md transition-all">
             <span className="text-xl">🛡️</span>
           </div>
           <div>
-            <h1 className="text-sm font-black text-slate-900 leading-tight uppercase tracking-wider">Missione Previdenza</h1>
-            <p className="text-[10px] text-slate-500 font-bold">Welfare Escape Room • INPS per le Scuole</p>
+            <h1 className="text-xs font-black text-slate-900 leading-tight uppercase tracking-wider">Missione Previdenza</h1>
+            <p className="text-[9px] text-slate-500 font-bold">Welfare Escape Room • INPS per le Scuole</p>
           </div>
         </div>
 
@@ -344,10 +344,10 @@ export default function App() {
           <button
             id={`toggle-sounds-btn`}
             onClick={handleToggleSound}
-            className="p-2.5 rounded-xl text-slate-500 hover:text-blue-600 hover:bg-slate-50 cursor-pointer transition-colors"
+            className="p-2 rounded-xl text-slate-500 hover:text-blue-600 hover:bg-slate-50 cursor-pointer transition-colors"
             title={soundOn ? "Mutolo" : "Attiva Suoni"}
           >
-            {soundOn ? <Volume2 className="w-5 h-5" /> : <VolumeX className="w-5 h-5" />}
+            {soundOn ? <Volume2 className="w-4.5 h-4.5" /> : <VolumeX className="w-4.5 h-4.5" />}
           </button>
 
           {/* Teacher Guide Mode Button */}
@@ -357,13 +357,13 @@ export default function App() {
               playSound.playClick();
               setShowTeacherPanel(!showTeacherPanel);
             }}
-            className={`px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer ${
+            className={`px-3 py-1.5 rounded-xl text-[11px] font-bold transition-all flex items-center gap-1 cursor-pointer ${
               showTeacherPanel 
                 ? 'bg-amber-100 text-amber-800' 
                 : 'bg-slate-100 hover:bg-slate-200 text-slate-700'
             }`}
           >
-            <BookOpen className="w-3.5 h-3.5" />
+            <BookOpen className="w-3 h-3" />
             {showTeacherPanel ? "Nascondi Area Docente" : "Area Docente"}
           </button>
 
@@ -371,17 +371,17 @@ export default function App() {
             <button
               id={`reset-escape-btn`}
               onClick={handleResetGame}
-              className="p-2.5 rounded-xl text-slate-400 hover:text-red-500 hover:bg-red-50 cursor-pointer transition-colors"
+              className="p-2 rounded-xl text-slate-400 hover:text-red-500 hover:bg-red-50 cursor-pointer transition-colors"
               title="Reset Partita"
             >
-              <RefreshCw className="w-4 h-4" />
+              <RefreshCw className="w-3.5 h-3.5" />
             </button>
           )}
         </div>
       </header>
 
       {/* Main Body Grid */}
-      <main className="flex-1 max-w-7xl mx-auto w-full px-4 md:px-12 py-8 flex flex-col justify-center h-full">
+      <main className="flex-1 max-w-7xl mx-auto w-full px-4 md:px-8 py-3 flex flex-col justify-center h-full">
 
         <AnimatePresence mode="wait">
           {/* Global Teachers Module Modal/Overlay */}
@@ -594,32 +594,31 @@ export default function App() {
               key="playing-screen"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              className="space-y-6"
+              className="space-y-3.5"
             >
               {/* Dynamic Status Bar */}
-              <div className="bg-white border-2 border-slate-200 rounded-3xl p-5 shadow-sm flex flex-col md:flex-row items-center justify-between gap-4 text-left">
+              <div className="bg-white border-2 border-slate-200 rounded-3xl py-2.5 px-4 shadow-sm flex flex-col md:flex-row items-center justify-between gap-3 text-left">
                 
                 {/* Team indicators */}
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 bg-blue-50 rounded-xl flex items-center justify-center text-xl">
+                <div className="flex items-center gap-2">
+                  <div className="w-8 h-8 bg-blue-50 rounded-xl flex items-center justify-center text-lg">
                     👥
                   </div>
                   <div>
-                    <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest block">Squadra Attiva</span>
-                    <h3 className="font-extrabold text-slate-800 text-sm md:text-base leading-tight">
-                      {teamState.teamName} <span className="font-normal text-xs text-slate-500">({teamState.schoolClass})</span>
+                    <span className="text-[9px] font-black text-slate-400 uppercase tracking-widest block leading-none">Squadra Attiva</span>
+                    <h3 className="font-extrabold text-slate-800 text-xs md:text-sm leading-tight">
+                      {teamState.teamName} <span className="font-normal text-[11px] text-slate-500">({teamState.schoolClass})</span>
                     </h3>
                   </div>
                 </div>
 
                 {/* Progress Visualiser */}
-                <div className="flex-1 max-w-md w-full px-4">
-                  <div className="flex justify-between items-center text-xs mb-1">
-                    <span className="font-bold text-slate-600">Scudo Sociale Rigenerato:</span>
-                    <span className="font-black text-blue-600">{Math.round(percentComplete)}%</span>
+                <div className="flex-1 max-w-md w-full px-2">
+                  <div className="flex justify-between items-center text-[10px] mb-0.5">
+                    <span className="font-bold text-slate-605">Scudo Sociale Rigenerato:</span>
+                    <span className="font-black text-blue-655">{Math.round(percentComplete)}%</span>
                   </div>
-                  <div className="w-full bg-slate-100 h-3 rounded-full overflow-hidden">
+                  <div className="w-full bg-slate-100 h-2 rounded-full overflow-hidden">
                     <div 
                       className="bg-blue-600 h-full rounded-full transition-all duration-550"
                       style={{ width: `${percentComplete}%` }}
@@ -628,22 +627,22 @@ export default function App() {
                 </div>
 
                 {/* Dynamic XP Score Scoreboard */}
-                <div className="flex items-center gap-3 bg-blue-50 text-blue-900 px-4 py-2.5 rounded-2xl border border-blue-105 shrink-0">
-                  <Flame className="w-5 h-5 text-amber-550 fill-current animate-pulse text-amber-500" />
+                <div className="flex items-center gap-2.5 bg-blue-50 text-blue-900 px-3 py-1.5 rounded-xl border border-blue-100 shrink-0">
+                  <Flame className="w-4 h-4 text-amber-500 fill-current animate-pulse" />
                   <div>
-                    <span className="text-[9px] font-bold text-blue-500 block uppercase tracking-widest">XP Gara</span>
-                    <span className="font-mono text-base font-black tracking-wider leading-none">
+                    <span className="text-[8px] font-bold text-blue-500 block uppercase tracking-widest leading-none">XP Gara</span>
+                    <span className="font-mono text-sm font-black tracking-wider leading-none">
                       {teamState.score} XP
                     </span>
                   </div>
                 </div>
 
                 {/* Timer Clock */}
-                <div className="flex items-center gap-3 bg-slate-900 text-white px-5 py-2.5 rounded-2xl shadow-inner shrink-0 border border-slate-800">
-                  <TimerIcon className={`w-5 h-5 text-amber-400 ${teamState.timeRemaining < 180 ? 'animate-pulse text-red-500' : ''}`} />
+                <div className="flex items-center gap-2.5 bg-slate-900 text-white px-4 py-1.5 rounded-xl shadow-inner shrink-0 border border-slate-800">
+                  <TimerIcon className={`w-4 h-4 text-amber-400 ${teamState.timeRemaining < 180 ? 'animate-pulse text-red-500' : ''}`} />
                   <div>
-                    <span className="text-[9px] font-bold text-slate-400 block uppercase tracking-widest">Tempo Rimasto</span>
-                    <span className={`font-mono text-base font-black tracking-wider leading-none ${teamState.timeRemaining < 180 ? 'text-red-500' : ''}`}>
+                    <span className="text-[8px] font-bold text-slate-400 block uppercase tracking-widest leading-none">Tempo Rimasto</span>
+                    <span className={`font-mono text-sm font-black tracking-wider leading-none ${teamState.timeRemaining < 180 ? 'text-red-500' : ''}`}>
                       {formatTime(teamState.timeRemaining)}
                     </span>
                   </div>
@@ -652,9 +651,9 @@ export default function App() {
               </div>
 
               {/* Timeline Navigation Bar */}
-              <div className="bg-white border-2 border-slate-200 rounded-3xl p-4 shadow-sm flex flex-col items-center justify-center gap-2">
-                <span className="text-[10px] font-black text-slate-450 uppercase tracking-widest">Mappa del Portale Temporale (Seleziona per Navigare)</span>
-                <div className="flex items-center justify-center gap-1.5 md:gap-2 flex-wrap w-full">
+              <div className="bg-white border-2 border-slate-200 rounded-3xl py-2 px-4 shadow-sm flex flex-col items-center justify-center gap-1.5">
+                <span className="text-[9px] font-black text-slate-450 uppercase tracking-widest leading-none">Mappa del Portale Temporale (Seleziona per Navigare)</span>
+                <div className="flex items-center justify-center gap-1 flex-wrap w-full">
                   {puzzlesList.map((p, idx) => {
                     const isCompleted = teamState.completedPuzzles.includes(p.id);
                     const isCurrent = idx === currentGameIndex;
@@ -671,14 +670,14 @@ export default function App() {
                           }
                         }}
                         disabled={!isUnlocked}
-                        className={`w-7 h-7 md:w-8 md:h-8 rounded-full flex items-center justify-center text-[10px] md:text-xs font-black transition-all ${
+                        className={`w-6 h-6 md:w-7 md:h-7 rounded-full flex items-center justify-center text-[10px] font-black transition-all ${
                           isCurrent
-                            ? 'bg-blue-600 text-white ring-4 ring-blue-500/20 scale-110 shadow-md cursor-pointer'
+                            ? 'bg-blue-600 text-white ring-2 ring-blue-500/20 scale-105 shadow-md cursor-pointer'
                             : isCompleted
                               ? 'bg-emerald-100 text-emerald-800 border-2 border-emerald-350 hover:bg-emerald-200 cursor-pointer'
                               : isUnlocked
                                 ? 'bg-blue-50 text-blue-800 border-2 border-blue-200 hover:bg-blue-100 cursor-pointer'
-                                : 'bg-slate-100 text-slate-400 border border-slate-200 cursor-not-allowed opacity-50'
+                                : 'bg-slate-105 text-slate-400 border border-slate-200 cursor-not-allowed opacity-50'
                         }`}
                         title={`Enigma ${p.id}: ${p.title}`}
                       >
