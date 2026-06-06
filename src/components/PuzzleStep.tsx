@@ -14,6 +14,7 @@ interface PuzzleStepProps {
 }
 
 export const PuzzleStep: React.FC<PuzzleStepProps> = ({ puzzle, teamState, onSolve, onUseHint, onWrongAttempt }) => {
+  const isSolved = teamState.completedPuzzles.includes(puzzle.id);
   const [userInput, setUserInput] = useState('');
   const [errorFeedback, setErrorFeedback] = useState<string | null>(null);
   const [successAnim, setSuccessAnim] = useState(false);
@@ -41,17 +42,25 @@ export const PuzzleStep: React.FC<PuzzleStepProps> = ({ puzzle, teamState, onSol
   // Puzzle 4: Payslip interactive item selection
   const [selectedPayslipKey, setSelectedPayslipKey] = useState<string | null>(null);
 
+  // Puzzle 5: Chain letters selection for Enigma 5
+  const [chainLetters, setChainLetters] = useState<{ [key: number]: string }>({});
+
   // Reset states when puzzle changes
   useEffect(() => {
-    setUserInput('');
+    setUserInput(isSolved ? puzzle.correctAnswer : '');
     setErrorFeedback(null);
     setSuccessAnim(false);
-    setSelectedIcons([]);
-    setSelectedArticle(null);
-    setSelectedPayslipKey(null);
-  }, [puzzle]);
+    setSelectedIcons(isSolved && puzzle.mechanicType === 'icons'
+      ? iconTessera.filter(t => t.isCorrect).map(t => t.id)
+      : []
+    );
+    setSelectedArticle(isSolved && puzzle.mechanicType === 'constitution' ? Number(puzzle.correctAnswer) : null);
+    setSelectedPayslipKey(isSolved && puzzle.mechanicType === 'payslip' ? 'inps' : null);
+    setChainLetters(isSolved && puzzle.id === 5 ? { 4: 'D', 5: 'A', 8: 'E' } : {});
+  }, [puzzle, isSolved]);
 
   const handleIconToggle = (id: number) => {
+    if (isSolved) return;
     playSound.playClick();
     if (selectedIcons.includes(id)) {
       setSelectedIcons(selectedIcons.filter(item => item !== id));
@@ -297,6 +306,7 @@ export const PuzzleStep: React.FC<PuzzleStepProps> = ({ puzzle, teamState, onSol
                       key={art.num}
                       type="button"
                       onClick={() => {
+                        if (isSolved) return;
                         playSound.playClick();
                         setSelectedArticle(art.num);
                         if (art.isTarget) {
@@ -346,133 +356,308 @@ export const PuzzleStep: React.FC<PuzzleStepProps> = ({ puzzle, teamState, onSol
           {puzzle.mechanicType === 'payslip' && (
             <div className="space-y-6">
               <p className="text-xs md:text-sm text-slate-650 leading-relaxed mb-4">
-                Esplorate la busta paga simulata sottostante. Cliccate sulle diverse voci contrassegnate per scoprire dove finisce lo stipendio e qual è il nome dello speciale scudo che protegge i lavoratori disoccupati!
+                Esplorate la busta paga simulata sottostante. Cliccate sulle diverse voci del cedolino (in particolare sulla trattenuta evidenziata) per scoprire a cosa servono le trattenute e ricavare l'acronimo dello scudo sociale che protegge chi perde il lavoro.
               </p>
               
-              <div className="bg-slate-900 text-slate-100 rounded-2xl border border-slate-800 overflow-hidden font-mono text-xs shadow-lg max-w-xl mx-auto">
-                <div className="bg-slate-950 p-4 border-b border-slate-800 flex justify-between items-center">
-                  <div className="flex items-center gap-2">
-                    <FileText className="w-4 h-4 text-amber-500" />
-                    <span className="font-bold text-[10px] uppercase tracking-wider text-slate-300">Cedolino di Prova / Studente-Lavoratore</span>
+              <div className="bg-white text-slate-800 rounded-xl border border-slate-200/80 shadow-md max-w-xl mx-auto overflow-hidden font-sans text-xs">
+                {/* Cedolino Header */}
+                <div className="bg-slate-50 p-4 border-b border-slate-250">
+                  <div className="flex justify-between items-start">
+                    <div>
+                      <h4 className="font-bold text-slate-900 text-sm tracking-wide">FUTURO S.R.L.</h4>
+                      <p className="text-[10px] text-slate-500">Sede Legale: Via della Previdenza 42, Roma</p>
+                      <p className="text-[10px] text-slate-500">Codice Fiscale / P.IVA: 01234567890</p>
+                    </div>
+                    <div className="text-right">
+                      <span className="inline-block bg-slate-200 text-slate-800 text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-wider">
+                        Cedolino Paga
+                      </span>
+                      <p className="text-[10px] text-slate-600 font-bold mt-1">Periodo: Maggio 2026</p>
+                    </div>
                   </div>
-                  <span className="text-[9px] text-slate-500">Mese Civico 2026</span>
+                  
+                  <div className="grid grid-cols-2 gap-4 mt-3 pt-3 border-t border-slate-200 text-[10px]">
+                    <div>
+                      <span className="text-slate-400 font-medium block uppercase tracking-wider text-[8px]">Dipendente</span>
+                      <strong className="text-slate-850 text-xs">ROSSI MARIO</strong>
+                      <p className="text-slate-500 font-mono">C.F.: RSSMRA09A01H501U</p>
+                    </div>
+                    <div className="text-right">
+                      <span className="text-slate-400 font-medium block uppercase tracking-wider text-[8px]">Inquadramento</span>
+                      <strong className="text-slate-850">APPRENDISTA IMPIEGATO</strong>
+                      <p className="text-slate-500">Livello: 5 - Posizione INPS: 4892910</p>
+                    </div>
+                  </div>
                 </div>
 
-                <div className="p-4 space-y-2">
-                  <div className="grid grid-cols-3 border-b border-slate-800 pb-2 text-[10px] text-slate-400 font-bold">
-                    <span>DESCRIZIONE</span>
-                    <span className="text-right">VALORI</span>
-                    <span className="text-right">CHI LI GESTISCE</span>
+                {/* Cedolino Table */}
+                <div className="p-4">
+                  <div className="grid grid-cols-12 gap-1 border-b border-slate-300 pb-2 text-[10px] text-slate-500 font-bold bg-slate-50 px-2.5 py-1.5 rounded-t">
+                    <span className="col-span-2">CODICE</span>
+                    <span className="col-span-4">DESCRIZIONE</span>
+                    <span className="col-span-3 text-right">COMPETENZE</span>
+                    <span className="col-span-3 text-right">TRATTENUTE</span>
                   </div>
 
-                  <button
-                    type="button"
-                    onClick={() => { playSound.playClick(); setSelectedPayslipKey('lordo'); }}
-                    className={`w-full grid grid-cols-3 text-left py-2 px-2.5 rounded-lg transition-all border ${
-                      selectedPayslipKey === 'lordo'
-                        ? 'bg-blue-950/65 border-blue-800 text-blue-300'
-                        : 'bg-transparent border-transparent hover:bg-slate-800/40 text-slate-200'
-                    }`}
-                  >
-                    <span className="font-bold text-slate-200">1. Stipendio Lordo</span>
-                    <span className="text-right text-emerald-400 font-bold">+ €1.500,00</span>
-                    <span className="text-right text-slate-400 text-[10px]">Azienda</span>
-                  </button>
+                  <div className="divide-y divide-slate-100">
+                    <button
+                      type="button"
+                      onClick={() => { playSound.playClick(); setSelectedPayslipKey('lordo'); }}
+                      className={`w-full grid grid-cols-12 gap-1 text-left py-2.5 px-2.5 transition-all text-[11px] items-center border ${
+                        selectedPayslipKey === 'lordo'
+                          ? 'bg-blue-50/70 border-blue-200 text-blue-900 font-medium'
+                          : 'bg-transparent border-transparent hover:bg-slate-50 text-slate-700'
+                      }`}
+                    >
+                      <span className="col-span-2 font-mono text-slate-400">1000</span>
+                      <span className="col-span-4 font-semibold text-slate-800">Retribuzione Base (Lordo)</span>
+                      <span className="col-span-3 text-right text-emerald-600 font-bold">+ € 1.500,00</span>
+                      <span className="col-span-3 text-right text-slate-400">—</span>
+                    </button>
 
-                  <button
-                    type="button"
-                    onClick={() => { playSound.playClick(); setSelectedPayslipKey('inps'); }}
-                    className={`w-full grid grid-cols-3 text-left py-2.5 px-2.5 rounded-lg transition-all border ${
-                      selectedPayslipKey === 'inps'
-                        ? 'bg-amber-950/80 border-amber-500 text-amber-200'
-                        : 'bg-amber-950/15 border border-dashed border-amber-600/35 hover:bg-amber-950/30 text-amber-300 animate-pulse'
-                    }`}
-                  >
-                    <span className="font-bold flex items-center gap-1 text-amber-400">2. Trattenute INPS *</span>
-                    <span className="text-right text-red-400 font-bold">- €140,00</span>
-                    <span className="text-right text-amber-400 font-black">INPS (Welfare)</span>
-                  </button>
+                    <button
+                      type="button"
+                      onClick={() => { playSound.playClick(); setSelectedPayslipKey('inps'); }}
+                      className={`w-full grid grid-cols-12 gap-1 text-left py-3 px-2.5 transition-all text-[11px] items-center border ${
+                        selectedPayslipKey === 'inps'
+                          ? 'bg-amber-50/90 border-amber-300 text-amber-900 font-medium'
+                          : 'bg-amber-50/30 border border-dashed border-amber-400 hover:bg-amber-50/60 text-slate-700 animate-pulse'
+                      }`}
+                    >
+                      <span className="col-span-2 font-mono text-slate-400">9000</span>
+                      <span className="col-span-4 font-bold flex items-center gap-1 text-amber-700">
+                        Contributi Previdenziali INPS *
+                      </span>
+                      <span className="col-span-3 text-right text-slate-400">—</span>
+                      <span className="col-span-3 text-right text-amber-600 font-bold">- € 137,85</span>
+                    </button>
 
-                  <button
-                    type="button"
-                    onClick={() => { playSound.playClick(); setSelectedPayslipKey('irpef'); }}
-                    className={`w-full grid grid-cols-3 text-left py-2 px-2.5 rounded-lg transition-all border ${
-                      selectedPayslipKey === 'irpef'
-                        ? 'bg-blue-950/65 border-blue-800 text-blue-300'
-                        : 'bg-transparent border-transparent hover:bg-slate-800/40 text-slate-200'
-                    }`}
-                  >
-                    <span className="font-bold text-slate-200">3. Tasse IRPEF</span>
-                    <span className="text-right text-red-400 font-bold">- €160,00</span>
-                    <span className="text-right text-slate-400 text-[10px]">Stato (Fisco)</span>
-                  </button>
+                    <button
+                      type="button"
+                      onClick={() => { playSound.playClick(); setSelectedPayslipKey('irpef'); }}
+                      className={`w-full grid grid-cols-12 gap-1 text-left py-2.5 px-2.5 transition-all text-[11px] items-center border ${
+                        selectedPayslipKey === 'irpef'
+                          ? 'bg-blue-50/70 border-blue-200 text-blue-900 font-medium'
+                          : 'bg-transparent border-transparent hover:bg-slate-50 text-slate-700'
+                      }`}
+                    >
+                      <span className="col-span-2 font-mono text-slate-400">9500</span>
+                      <span className="col-span-4 font-semibold text-slate-805">Imposta IRPEF (Fisco)</span>
+                      <span className="col-span-3 text-right text-slate-400">—</span>
+                      <span className="col-span-3 text-right text-red-500 font-bold">- € 162,15</span>
+                    </button>
+                  </div>
 
-                  <div className="h-[1px] bg-slate-800 my-2" />
+                  {/* Totals & Net Pay */}
+                  <div className="border-t border-slate-250 pt-3 mt-3">
+                    <div className="grid grid-cols-12 gap-1 px-2.5 text-[10px] text-slate-500 font-semibold mb-1">
+                      <span className="col-span-6 text-right">Totale Competenze:</span>
+                      <span className="col-span-3 text-right text-slate-700">+ € 1.500,00</span>
+                      <span className="col-span-3" />
+                    </div>
+                    <div className="grid grid-cols-12 gap-1 px-2.5 text-[10px] text-slate-500 font-semibold mb-3">
+                      <span className="col-span-6 text-right">Totale Trattenute:</span>
+                      <span className="col-span-3" />
+                      <span className="col-span-3 text-right text-slate-700">- € 300,00</span>
+                    </div>
 
-                  <button
-                    type="button"
-                    onClick={() => { playSound.playClick(); setSelectedPayslipKey('netto'); }}
-                    className={`w-full grid grid-cols-3 text-left py-2 px-2.5 rounded-lg transition-all border ${
-                      selectedPayslipKey === 'netto'
-                        ? 'bg-blue-950/65 border-blue-800 text-blue-300'
-                        : 'bg-transparent border-transparent hover:bg-slate-800/40 text-slate-200'
-                    }`}
-                  >
-                    <span className="font-bold text-emerald-400">STIPENDIO NETTO</span>
-                    <span className="text-right text-emerald-300 font-black">€1.200,00</span>
-                    <span className="text-right text-slate-400 text-[10px]">Tuo Conto</span>
-                  </button>
+                    <button
+                      type="button"
+                      onClick={() => { playSound.playClick(); setSelectedPayslipKey('netto'); }}
+                      className={`w-full grid grid-cols-12 gap-1 text-left py-3 px-3 rounded-lg transition-all border-2 items-center ${
+                        selectedPayslipKey === 'netto'
+                          ? 'bg-emerald-50 border-emerald-500 text-emerald-900 font-bold'
+                          : 'bg-emerald-50/30 border-emerald-100 hover:bg-emerald-50/60 text-slate-700'
+                      }`}
+                    >
+                      <span className="col-span-6 font-bold text-slate-800 uppercase tracking-wider text-xs">
+                        NETTO IN BUSTA (Netto da Pagare)
+                      </span>
+                      <span className="col-span-3 text-right text-emerald-700 text-sm font-black">
+                        € 1.200,00
+                      </span>
+                      <span className="col-span-3 text-right text-[9px] text-slate-450 font-normal italic">
+                        (Accredito Bancario)
+                      </span>
+                    </button>
+                  </div>
                 </div>
 
-                <div className="bg-slate-950 p-4 border-t border-slate-850 text-[11px] leading-relaxed min-h-24 flex items-center">
+                {/* Interactive Explanation Box */}
+                <div className="bg-slate-50 p-4 border-t border-slate-200 text-[11px] leading-relaxed min-h-24 flex items-center">
                   {!selectedPayslipKey ? (
-                    <p className="text-slate-400 italic">★ Fai clic sulle voci della busta paga sopra per svelare l'enigma della trattenuta INPS!</p>
+                    <p className="text-slate-500 italic">★ Fai clic sulle righe del cedolino paga per esaminare le voci e svelare l'indizio!</p>
                   ) : selectedPayslipKey === 'lordo' ? (
-                    <p className="text-slate-300"><strong>Stipendio Lordo:</strong> È la paga concordata totale prima di qualsiasi dazio. Indica il costo teorico di produzione, ma non è quello che porti a casa.</p>
+                    <p className="text-slate-700"><strong>Paga Base (Stipendio Lordo):</strong> È la retribuzione totale pattuita nel contratto di lavoro prima delle ritenute fiscali e previdenziali. Rappresenta il valore economico lordo del tuo lavoro.</p>
                   ) : selectedPayslipKey === 'inps' ? (
-                    <p className="text-amber-200"><strong>★ Trattenute INPS (Contributi):</strong> Non sono tasse perse! Servono a pagare la tua pensione futura, la malattia, l'infortunio e financo la <strong className="text-emerald-400 underline uppercase">NASPI</strong> (Nuova Assicurazione Sociale per l'Impiego), ovvero il mensile di disoccupazione che ti spetta se perdi involontariamente il lavoro!</p>
+                    <p className="text-slate-700">
+                      <strong>★ Contributi Previdenziali INPS:</strong> Non sono tasse generiche, ma una quota accantonata per la tua sicurezza sociale! Finanziano pensioni, malattia, infortuni e soprattutto la <strong>Nuova Assicurazione Sociale per l'Impiego</strong> (il sussidio di disoccupazione che supporta chi perde involontariamente il lavoro). Qual è la sigla formata dalle sue iniziali?
+                    </p>
                   ) : selectedPayslipKey === 'irpef' ? (
-                    <p className="text-slate-300"><strong>Tasse IRPEF:</strong> Rappresenta l'imposta fiscale sulle persone fisiche. Serve allo Stato per erogare strade pubbliche, polizia, carabinieri ed ospedali e la tua stessa scuola!</p>
+                    <p className="text-slate-700"><strong>Imposta IRPEF:</strong> È l'Imposta sul Reddito delle Persone Fisiche trattenuta per conto dello Stato. Queste tasse servono a coprire i costi di servizi pubblici essenziali di cui usufruisci quotidianamente, come la scuola e la sanità.</p>
                   ) : (
-                    <p className="text-slate-300"><strong>Stipendio Netto:</strong> È il denaro effettivo e pulito pagato sul tuo conto corrente bancario, libero da imposte e gravato di tutte le tutele previste.</p>
+                    <p className="text-slate-700"><strong>Netto in Busta:</strong> È la somma liquida effettiva che viene accreditata sul tuo conto corrente bancario (ottenuta sottraendo Contributi INPS ed IRPEF dalla Paga Base Lorda).</p>
                   )}
                 </div>
               </div>
 
               {selectedPayslipKey === 'inps' && (
-                <div className="bg-amber-50 border border-amber-200 rounded-xl p-4 text-xs text-amber-800">
-                  <p className="font-bold mb-1">💡 Indizio Sbloccato!</p>
-                  <span>Hai trovato lo scudo di disoccupazione nella spiegazione delle trattenute INPS. La parola segreta è <strong>NASPI</strong>. Digita la sigla sotto in maiuscolo e premi invio!</span>
+                <div className="bg-amber-50 border border-amber-200 rounded-xl p-4 text-xs text-amber-800 flex items-start gap-2.5 max-w-xl mx-auto">
+                  <CheckCircle className="w-5 h-5 text-amber-600 shrink-0 mt-0.5" />
+                  <div>
+                    <p className="font-bold mb-1">💡 Indizio Sbloccato!</p>
+                    <span>Hai individuato lo scudo di disoccupazione nel cedolino paga! Per comporre la parola segreta, prendi le lettere iniziali della denominazione ufficiale: <strong>N</strong>uova <strong>A</strong>ssicurazione <strong>S</strong>ociale <strong>P</strong>er l'<strong>I</strong>mpiego. Inserisci l'acronimo risultante in maiuscolo e premi invio!</span>
+                  </div>
                 </div>
               )}
             </div>
           )}
 
           {puzzle.mechanicType === 'decode' && (
-            <div className="space-y-4">
-              <p className="text-xs text-slate-650 leading-relaxed mb-1">
-                La catena del Welfare supporta chi si trova in temporaneo infortunio, chi perde il lavoro (Disoccupazione NASpI), e chi soffre di disabilità. Per ricongiungere le maglie, dobbiamo completare l'iscrizione sul ponte:
-              </p>
-              
-              <div className="flex justify-center flex-wrap gap-2 py-4 bg-slate-50 rounded-2xl border border-slate-100 font-bold text-lg">
-                {(puzzle.correctAnswer || '').split('').map((char, index) => {
-                  const maskPositions: number[] = (puzzle.mechanicData && puzzle.mechanicData.maskPositions) || [];
-                  const isMissing = maskPositions.includes(index);
-                  return (
-                    <div
-                      key={index}
-                      className={`w-10 h-10 rounded-xl flex items-center justify-center border-2 transition-all ${
-                        isMissing
-                          ? 'border-dashed border-amber-400 bg-amber-50 text-amber-700 animate-pulse'
-                          : 'border-slate-200 bg-white text-slate-800 shadow-sm'
-                      }`}
-                    >
-                      {char}
+            <div className="space-y-6">
+              {puzzle.id === 5 ? (
+                /* Enigma 5: La Catena del Welfare - Interactive Chain UI */
+                <div className="space-y-6">
+                  <p className="text-xs md:text-sm text-slate-600 leading-relaxed text-center max-w-lg mx-auto">
+                    La catena del Welfare supporta chi si trova in temporaneo infortunio, chi perde il lavoro (Disoccupazione), e chi soffre di disabilità. Per ricongiungere le maglie, dobbiamo inserire le lettere mancanti:
+                  </p>
+
+                  <div className="flex justify-center items-center flex-wrap gap-y-4 py-6 px-4 bg-slate-50 border border-slate-200/60 rounded-2xl max-w-xl mx-auto shadow-inner">
+                    {(puzzle.correctAnswer || '').split('').map((char, index) => {
+                      const maskPositions: number[] = (puzzle.mechanicData && puzzle.mechanicData.maskPositions) || [];
+                      const isMasked = maskPositions.includes(index);
+                      const isPlaced = isMasked && chainLetters[index];
+                      const displayChar = isSolved ? char : (isMasked ? (chainLetters[index] || '?') : char);
+                      
+                      return (
+                        <div key={index} className="flex items-center">
+                          {index > 0 && (
+                            <div className={`h-1.5 w-3.5 -mx-1 z-0 transition-colors duration-305 ${
+                              isSolved 
+                                ? 'bg-emerald-400 border-y border-emerald-500' 
+                                : isPlaced
+                                  ? 'bg-blue-400 border-y border-blue-500'
+                                  : 'bg-slate-300 border-y border-slate-400'
+                            }`} />
+                          )}
+                          <button
+                            type="button"
+                            disabled={isSolved || !isMasked}
+                            onClick={() => {
+                              if (isMasked && !isSolved) {
+                                playSound.playClick();
+                                const newChain = { ...chainLetters };
+                                delete newChain[index];
+                                setChainLetters(newChain);
+                                // Sync to input
+                                const updatedInput = (puzzle.correctAnswer || '').split('').map((c, i) => {
+                                  if (maskPositions.includes(i)) {
+                                    return i === index ? '' : (chainLetters[i] || '');
+                                  }
+                                  return c;
+                                }).join('');
+                                setUserInput(updatedInput);
+                              }
+                            }}
+                            className={`w-10 h-10 rounded-full flex items-center justify-center font-extrabold text-base border-2 relative z-10 transition-all shadow-sm ${
+                              isSolved
+                                ? 'border-emerald-500 bg-emerald-50 text-emerald-700 cursor-default'
+                                : isMasked
+                                  ? isPlaced
+                                    ? 'border-blue-500 bg-blue-50 text-blue-700 hover:bg-blue-100/80 hover:scale-105 cursor-pointer animate-none'
+                                    : 'border-dashed border-amber-400 bg-amber-50 text-amber-600 animate-pulse hover:bg-amber-100/40 cursor-pointer'
+                                  : 'border-slate-300 bg-white text-slate-800 cursor-default'
+                            }`}
+                          >
+                            {displayChar}
+                          </button>
+                        </div>
+                      );
+                    })}
+                  </div>
+
+                  {!isSolved && (
+                    <div className="text-center space-y-3 mt-4">
+                      <span className="text-[11px] font-bold text-slate-500 uppercase tracking-wider block">
+                        Clicca sui frammenti per completare la catena:
+                      </span>
+                      <div className="flex justify-center gap-2 flex-wrap">
+                        {['D', 'A', 'E', 'L', 'O', 'P'].map((letter, idx) => {
+                          return (
+                            <button
+                              key={idx}
+                              type="button"
+                              onClick={() => {
+                                playSound.playClick();
+                                const maskPositions = [4, 5, 8];
+                                const emptyPos = maskPositions.find(pos => !chainLetters[pos]);
+                                if (emptyPos !== undefined) {
+                                  const newChain = { ...chainLetters, [emptyPos]: letter };
+                                  setChainLetters(newChain);
+                                  // Sync to input
+                                  const updatedInput = (puzzle.correctAnswer || '').split('').map((c, i) => {
+                                    if (maskPositions.includes(i)) {
+                                      return newChain[i] || '';
+                                    }
+                                    return c;
+                                  }).join('');
+                                  setUserInput(updatedInput);
+                                }
+                              }}
+                              className="w-10 h-10 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 hover:border-slate-350 text-slate-800 font-extrabold text-sm shadow-sm transition-all cursor-pointer flex items-center justify-center active:scale-95"
+                            >
+                              {letter}
+                            </button>
+                          );
+                        })}
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          playSound.playClick();
+                          setChainLetters({});
+                          const clearedInput = (puzzle.correctAnswer || '').split('').map((c, i) => [4, 5, 8].includes(i) ? '' : c).join('');
+                          setUserInput(clearedInput);
+                        }}
+                        className="text-[10px] text-slate-400 hover:text-slate-655 underline font-medium cursor-pointer"
+                      >
+                        Azzera lettere inserite
+                      </button>
                     </div>
-                  );
-                })}
-              </div>
-              <ul className="list-decimal pl-5 space-y-1 text-xs text-slate-500 italic mt-3">
+                  )}
+                </div>
+              ) : (
+                /* Enigma 8, 10, 12: Classic Decoding Puzzle with Input Character Syncing */
+                <div className="space-y-4">
+                  <p className="text-xs text-slate-650 leading-relaxed text-center max-w-md mx-auto">
+                    Risolvi il quesito e inserisci il codice decifrato. Le caselle mostreranno i caratteri man mano che li digiti nel campo di testo sottostante.
+                  </p>
+
+                  <div className="flex justify-center flex-wrap gap-2 py-4 bg-slate-50 rounded-2xl border border-slate-150 max-w-md mx-auto px-4 shadow-inner">
+                    {(puzzle.correctAnswer || '').split('').map((char, index) => {
+                      const hasTyped = userInput && userInput[index];
+                      const displayChar = isSolved ? char : (hasTyped ? userInput[index].toUpperCase() : '•');
+                      
+                      return (
+                        <div
+                          key={index}
+                          className={`w-9 h-9 rounded-xl flex items-center justify-center border-2 transition-all font-mono font-bold text-base ${
+                            isSolved
+                              ? 'border-emerald-500 bg-emerald-50 text-emerald-700'
+                              : hasTyped
+                                ? 'border-blue-500 bg-blue-50 text-blue-700'
+                                : 'border-slate-200 bg-white text-slate-300'
+                          }`}
+                        >
+                          {displayChar}
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
+              
+              <ul className="list-decimal pl-5 space-y-1 text-xs text-slate-500 italic mt-3 max-w-md mx-auto">
                 <li>Chi lavora ed è forte aiuta anche chi è fragile.</li>
                 <li>I contributi non servono solo a se stessi, ma creano un tesoro a cui attingere in caso di gravi bisogni.</li>
               </ul>
@@ -508,26 +693,62 @@ export const PuzzleStep: React.FC<PuzzleStepProps> = ({ puzzle, teamState, onSol
           </p>
 
           <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-3">
-            <input
-              id={`puzzle-answer-input`}
-              type="text"
-              placeholder={puzzle.mechanicType === 'icons' ? `Es: ${iconTargetSum ?? '1898'}` : "Rispondi in MAIUSCOLO"}
-              value={userInput}
-              onChange={(e) => {
-                setUserInput(e.target.value);
-                if (errorFeedback) setErrorFeedback(null);
-              }}
-              className="flex-1 bg-slate-50 border-2 border-slate-200 hover:border-slate-300 focus:border-blue-500 rounded-2xl px-4 py-3 text-slate-800 font-bold focus:outline-none transition-all placeholder:text-slate-400 placeholder:font-normal uppercase"
-              disabled={successAnim}
-              autoComplete="off"
-            />
+            <div className="flex-1 relative flex items-center">
+              <input
+                id={`puzzle-answer-input`}
+                type="text"
+                placeholder={puzzle.mechanicType === 'icons' ? `Es: ${iconTargetSum ?? '1898'}` : "Rispondi in MAIUSCOLO"}
+                value={userInput}
+                onChange={(e) => {
+                  const val = e.target.value;
+                  setUserInput(val);
+                  if (errorFeedback) setErrorFeedback(null);
+                  if (puzzle.id === 5) {
+                    const upperVal = val.toUpperCase();
+                    const newChain: { [key: number]: string } = {};
+                    [4, 5, 8].forEach(pos => {
+                      if (upperVal[pos]) {
+                        newChain[pos] = upperVal[pos];
+                      }
+                    });
+                    setChainLetters(newChain);
+                  }
+                }}
+                className={`w-full bg-slate-50 border-2 border-slate-200 hover:border-slate-300 focus:border-blue-500 rounded-2xl pl-4 pr-16 py-3 text-slate-800 font-bold focus:outline-none transition-all placeholder:text-slate-400 placeholder:font-normal uppercase ${isSolved ? 'border-emerald-300 bg-emerald-50/20' : ''}`}
+                disabled={successAnim || isSolved}
+                autoComplete="off"
+              />
+              {userInput && !successAnim && !isSolved && (
+                <button
+                  type="button"
+                  onClick={() => {
+                    setUserInput('');
+                    playSound.playClick();
+                    if (puzzle.id === 5) {
+                      setChainLetters({});
+                    }
+                  }}
+                  className="absolute right-3 bg-slate-200 hover:bg-slate-300 text-slate-700 font-black px-2.5 py-1 rounded-xl text-[10px] cursor-pointer uppercase transition-colors"
+                >
+                  Cancella
+                </button>
+              )}
+            </div>
             <button
               id={`submit-puzzle-${puzzle.id}-btn`}
               type="submit"
-              className="bg-blue-600 hover:bg-blue-700 text-white font-bold px-6 py-3 rounded-2xl transition-all cursor-pointer flex items-center justify-center gap-2 shrink-0 disabled:opacity-50"
-              disabled={successAnim}
+              className={`font-bold px-6 py-3 rounded-2xl transition-all flex items-center justify-center gap-2 shrink-0 ${
+                isSolved 
+                  ? 'bg-emerald-600 hover:bg-emerald-700 text-white cursor-default' 
+                  : 'bg-blue-600 hover:bg-blue-700 text-white cursor-pointer disabled:opacity-50'
+              }`}
+              disabled={successAnim || isSolved}
             >
-              Invio Chiave <ArrowRight className="w-4 h-4" />
+              {isSolved ? (
+                <>✓ Risolto</>
+              ) : (
+                <>Invio Chiave <ArrowRight className="w-4 h-4" /></>
+              )}
             </button>
           </form>
 

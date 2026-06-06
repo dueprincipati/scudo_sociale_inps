@@ -14,8 +14,7 @@ import {
   Settings, Volume2, VolumeX, RefreshCw, Zap, Landmark, Play, Sparkles, BookOpen
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
-
-const TIMER_DURATION_SECONDS = 45 * 60; // 45 minuti per le aule scolastiche
+import { TIMER_DURATION_SECONDS, computeLiveScore } from './utils/score';
 
 export default function App() {
   const [activeStep, setActiveStep] = useState<'welcome' | 'playing' | 'victory' | 'gameover'>('welcome');
@@ -45,35 +44,7 @@ export default function App() {
     playSound.playClick();
   };
 
-  // Live Score Calculator
-  const computeLiveScore = (
-    timeRemaining: number, 
-    hintsUsed: { [puzzleId: number]: number }, 
-    wrongAttempts: { [puzzleId: number]: number }
-  ) => {
-    const BASE_SCORE = 2000;
-    
-    // Calculate time elapsed
-    const secondsElapsed = TIMER_DURATION_SECONDS - timeRemaining;
-    const timePenalty = secondsElapsed * 0.3; // 0.3 points per second elapsed
-    
-    // Calculate hints penalty
-    let hintsPenalty = 0;
-    Object.values(hintsUsed || {}).forEach((count) => {
-      if (count >= 1) hintsPenalty += 50; 
-      if (count >= 2) hintsPenalty += 100;
-      if (count >= 3) hintsPenalty += 250;
-    });
-    
-    // Wrong attempts penalty
-    let wrongAttemptsPenalty = 0;
-    Object.values(wrongAttempts || {}).forEach((count) => {
-      wrongAttemptsPenalty += count * 40; // 40 points per wrong attempt
-    });
-    
-    const rawScore = BASE_SCORE - timePenalty - hintsPenalty - wrongAttemptsPenalty;
-    return Math.max(100, Math.round(rawScore));
-  };
+  // Live Score Calculator is imported from ./utils/score
 
   // Seeding and restoring Leaderboard
   useEffect(() => {
@@ -247,8 +218,8 @@ export default function App() {
           schoolClass: prev.schoolClass,
           score: calculatedScore,
           timeSpentSeconds: TIMER_DURATION_SECONDS - prev.timeRemaining,
-          hintsUsedCount: Object.values(prev.hintsUsed).reduce((a, b) => a + b, 0),
-          wrongAttemptsCount: Object.values(prev.wrongAttempts || {}).reduce((a, b) => a + b, 0),
+          hintsUsedCount: (Object.values(prev.hintsUsed) as number[]).reduce((a, b) => a + b, 0),
+          wrongAttemptsCount: (Object.values(prev.wrongAttempts || {}) as number[]).reduce((a, b) => a + b, 0),
           completedAt: new Date().toISOString()
         };
 
@@ -680,6 +651,44 @@ export default function App() {
 
               </div>
 
+              {/* Timeline Navigation Bar */}
+              <div className="bg-white border-2 border-slate-200 rounded-3xl p-4 shadow-sm flex flex-col items-center justify-center gap-2">
+                <span className="text-[10px] font-black text-slate-450 uppercase tracking-widest">Mappa del Portale Temporale (Seleziona per Navigare)</span>
+                <div className="flex items-center justify-center gap-1.5 md:gap-2 flex-wrap w-full">
+                  {puzzlesList.map((p, idx) => {
+                    const isCompleted = teamState.completedPuzzles.includes(p.id);
+                    const isCurrent = idx === currentGameIndex;
+                    const maxUnlockedIdx = teamState.completedPuzzles.length;
+                    const isUnlocked = idx <= maxUnlockedIdx;
+                    
+                    return (
+                      <button
+                        key={p.id}
+                        onClick={() => {
+                          if (isUnlocked) {
+                            playSound.playClick();
+                            setCurrentGameIndex(idx);
+                          }
+                        }}
+                        disabled={!isUnlocked}
+                        className={`w-7 h-7 md:w-8 md:h-8 rounded-full flex items-center justify-center text-[10px] md:text-xs font-black transition-all ${
+                          isCurrent
+                            ? 'bg-blue-600 text-white ring-4 ring-blue-500/20 scale-110 shadow-md cursor-pointer'
+                            : isCompleted
+                              ? 'bg-emerald-100 text-emerald-800 border-2 border-emerald-350 hover:bg-emerald-200 cursor-pointer'
+                              : isUnlocked
+                                ? 'bg-blue-50 text-blue-800 border-2 border-blue-200 hover:bg-blue-100 cursor-pointer'
+                                : 'bg-slate-100 text-slate-400 border border-slate-200 cursor-not-allowed opacity-50'
+                        }`}
+                        title={`Enigma ${p.id}: ${p.title}`}
+                      >
+                        {p.id}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+
               {/* Central Puzzle Render */}
               <PuzzleStep
                 puzzle={puzzlesList[currentGameIndex]}
@@ -758,13 +767,13 @@ export default function App() {
                       <div className="flex justify-between">
                         <span>Codici Errati Inseriti:</span>
                         <span className="font-mono font-semibold text-rose-700">
-                          {Object.values(teamState.wrongAttempts || {}).reduce((sum, val) => sum + val, 0)} sottomissioni
+                          {(Object.values(teamState.wrongAttempts || {}) as number[]).reduce((sum, val) => sum + val, 0)} sottomissioni
                         </span>
                       </div>
                       <div className="flex justify-between">
                         <span>Suggerimenti Guido sbloccati:</span>
                         <span className="font-mono font-semibold text-amber-700">
-                          {Object.values(teamState.hintsUsed || {}).reduce((sum, val) => sum + val, 0)} indizi
+                          {(Object.values(teamState.hintsUsed || {}) as number[]).reduce((sum, val) => sum + val, 0)} indizi
                         </span>
                       </div>
                     </div>

@@ -19,7 +19,7 @@ export const puzzlesList: Puzzle[] = [
     id: 2,
     title: "Enigma 2: Il Salvadanaio della Sicurezza",
     description: "Il computer di bordo richiede la chiave d'accesso al 'Salvadanaio dei Superpoteri'. Molti credono che i contributi pagati all'INPS siano solo tasse perse nel vuoto, ma in realtà sono PE (Punti Esperienza) che sbloccano dei veri e propri Superpoteri di Protezione per la tua vita!",
-    educationalTidbit: "I contributi previdenziali non sono tasse generiche, ma una quota dello stipendio messa da parte per proteggerci. Quando ti ammali (Indennità di Malattia), se hai un infortunio lavorando (Assicurazione), quando diventi mamma o papà (Maternità) o quando sarai anziano (Pensione), l'INPS sblocca il salvadanaio per garantirti stipendio e cure gratuite. Sconto videogame e Netflix gratis, invece, non fanno parte delle tutele sociali!",
+    educationalTidbit: "I contributi previdenziali non sono tasse generiche, ma una quota dello stipendio messa da parte per proteggerci. La previdenza in Italia nasce ufficialmente nel 1898 con la fondazione della Cassa Nazionale per l'Invalidità e la Vecchiaia degli Operai. Questo fondo collettivo pagava le pensioni e garantiva assistenza in caso di malattia, infortuni, maternità e vecchiaia. Abbonamenti a servizi di streaming o sconti commerciali, invece, non sono diritti sociali!",
     mechanicType: "icons",
     question: "Seleziona ESATTAMENTE e SOLO i 4 veri Superpoteri garantiti dai contributi previdenziali. Somma i codici temporali delle tessere corrette per sbloccare la chiave numerica! (La risposta è un anno storico composto da 4 cifre).",
     correctAnswer: "1898",
@@ -46,15 +46,15 @@ export const puzzlesList: Puzzle[] = [
   {
     id: 4,
     title: "Enigma 4: La Busta Paga e lo Scudo del Lavoro",
-    description: "Incontrate un ragazzo che ha appena iniziato a lavorare: 'Il mio stipendio sulla carta (lordo) è di 1500 euro, ma in banca ricevo un bonifico (netto) di 1200 euro! Perché mancano 300 euro, se le tasse servono solo per le strade?'. Aiutatelo a scoprire il misterioso scudo di riserva che sta finanziando ogni mese!",
-    educationalTidbit: "La differenza tra cifra lorda e netta in busta paga non è un furto, ma rappresenta in gran parte i contributi previdenziali INPS! Questi soldi formano una polizza collettiva. Uno dei servizi principali finanziati è la protezione mensile contro la disoccupazione involontaria, chiamata NASpI. Chi perde il lavoro non finisce per strada ma viene aiutato dallo Stato!",
+    description: "Incontrate un ragazzo che ha appena iniziato a lavorare: 'Il mio stipendio sulla carta (lordo) è di 1500 euro, ma in banca ricevo un bonifico (netto) di 1200 euro! Perché mancano 300 euro, dove vanno a finire questi soldi? Servono forse a finanziare tutele e assicurazioni per il mio futuro lavorativo?'. Aiutatelo a scoprire il misterioso scudo di riserva che sta finanziando ogni mese!",
+    educationalTidbit: "La differenza tra cifra lorda e netta in busta paga non è un furto, ma rappresenta in gran parte i contributi previdenziali INPS! Questi soldi formano una polizza collettiva. Uno dei servizi principali finanziati è la protezione mensile contro la disoccupazione involontaria. Per scoprire la parola chiave, trova la sigla formata dalle lettere iniziali della sua denominazione ufficiale: **N**uova **A**ssicurazione **S**ociale **P**er l'**I**mpiego.",
     mechanicType: "payslip",
-    question: "Inserisci la sigla che definisce l'indennità mensile di disoccupazione che soccorre chi perde involontariamente il lavoro per aiutarlo a trovare un nuovo impiego: N _ _ _ _ I (Scrivi in MAIUSCOLO).",
+    question: "Trova le iniziali della denominazione ufficiale del sussidio di disoccupazione per svelare l'acronimo di 5 lettere: N _ _ _ _ I (Scrivi in MAIUSCOLO).",
     correctAnswer: "NASPI",
     hints: [
-      { id: 1, text: "La sigla sta per 'Nuova Assicurazione Sociale per l'Impiego'." },
-      { id: 2, text: "Comincia con la lettera N e termina con la lettera I. È formata da 5 lettere." },
-      { id: 3, text: "La parola chiave da digitare è proprio NASPI!" }
+      { id: 1, text: "La sigla è l'acronimo di 'Nuova Assicurazione Sociale per l'Impiego'." },
+      { id: 2, text: "Prendi la prima lettera di ciascuna parola: Nuova (N), Assicurazione (A), Sociale (S), Per l' (P), Impiego (I)." },
+      { id: 3, text: "Unisci le iniziali delle parole: Nuova Assicurazione Sociale Per l'Impiego. Otterrai la sigla di 5 lettere da inserire." }
     ]
   },
   {
@@ -63,12 +63,12 @@ export const puzzlesList: Puzzle[] = [
     description: "Una tempesta magnetica scatenata dall'indifferenza rischia di far crollare le difese dei cittadini più deboli. Per ricostruire la 'Catena del Welfare', dobbiamo capire un concetto fondamentale: non siamo isole! Se qualcuno perde il lavoro o si fa male, l'intera comunità interviene per sostenerlo.",
     educationalTidbit: "La previdenza sociale si fonda sulla solidarietà nazionale. Chi ha di più contribuisce di più, e chi si trova in condizioni di grave difficoltà (disoccupazione, invalidità, povertà) riceve speciali aiuti. Questo sistema fa sì che nessuno sia lasciato indietro. Sconfigge la povertà e favorisce l'uguaglianza sociale!",
     mechanicType: "decode",
-    question: "Inserisci la parola magica che definisce questo valore. È il contrario di egoismo, unisce le persone in una cordata di mutuo aiuto, e dà il nome alla catena che tiene unito l'intero scudo sociale: S _ _ _ _ _ _ _ _ _ _ _",
+    question: "Trova e inserisci i frammenti mancanti per ricomporre la Catena del Welfare e svelare la parola magica: S _ _ _ _ _ _ _ _ _ _ _ (Scrivi in MAIUSCOLO).",
     correctAnswer: "SOLIDARIETA",
     hints: [
-      { id: 1, text: "La parola inizia con la lettera S e finisce con la A (o À). Ha 11 lettere in totale." },
-      { id: 2, text: "È il sentimento di fratellanza e di aiuto reciproco che spinge le persone a sostenersi a vicenda nelle difficoltà. S-O-L-I-D-A-R-I-E-T-A." },
-      { id: 3, text: "La parola da digitare (senza accenti, tutta in maiuscolo) è: SOLIDARIETA." }
+      { id: 1, text: "La parola descrive il valore dell'aiuto reciproco e dell'unione nelle difficoltà. Ha 11 lettere e inizia con la lettera S." },
+      { id: 2, text: "È il contrario di egoismo o indifferenza. Pensa a come si definisce il patto di mutuo aiuto: S - O - L - I - ... - A - R - I - ... - T - A." },
+      { id: 3, text: "Usa i tasti lettera sotto la catena per inserire D, A ed E nelle maglie vuote. La parola finale descrive il sentimento di fratellanza collettiva." }
     ],
     mechanicData: {
       maskPositions: [4, 5, 8]
