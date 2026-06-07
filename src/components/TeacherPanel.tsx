@@ -89,7 +89,7 @@ export const TeacherPanel: React.FC<TeacherPanelProps> = ({ onSkipToPuzzle, onRe
               <FileText className="w-4 h-4 text-blue-600" /> Il Valore Sociale della Previdenza spiegato ai Ragazzi
             </h3>
             <p>
-              Questa Escape Room digitale è progettata specificamente per i ragazzi delle <strong>Scuole Medie (11-14 anni)</strong>,
+              Questa Escape Room digitale è progettata specificamente per i ragazzi e le loro famiglie al <strong>Family Day INPS 2026</strong>,
               in corrispondenza dei moduli di <strong>Educazione Civica e Cittadinanza Attiva</strong>.
               L'obiettivo è destrutturare l'idea che la previdenza sia un argomento arido o utile solo alla terza età.
             </p>
@@ -198,7 +198,7 @@ export const TeacherPanel: React.FC<TeacherPanelProps> = ({ onSkipToPuzzle, onRe
                 <input
                   id="print-class"
                   type="text"
-                  placeholder="Es: 2° A - Scuole Medie"
+                  placeholder="Es: Gruppo Famiglia Rossi"
                   value={printSchoolClass}
                   onChange={(e) => setPrintSchoolClass(e.target.value)}
                   className="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-sm focus:outline-blue-500"
@@ -237,7 +237,7 @@ export const TeacherPanel: React.FC<TeacherPanelProps> = ({ onSkipToPuzzle, onRe
                   <p className="font-bold italic text-sm">Firma Digitale Accertata</p>
                 </div>
               </div>
-              <p className="text-[10px] text-slate-450 uppercase tracking-widest mt-12">Istituti di Previdenza & Scuole d'Italia unite nella solidarietà</p>
+              <p className="text-[10px] text-slate-450 uppercase tracking-widest mt-12">Istituti di Previdenza & Famiglie unite nella solidarietà</p>
             </div>
           </div>
         )}

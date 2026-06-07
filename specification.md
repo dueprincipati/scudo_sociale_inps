@@ -1,6 +1,6 @@
 # Specifica di Progetto: Missione Previdenza
 
-Benvenuto nella specifica ufficiale di **Missione Previdenza**, l'escape room educativa digitale pensata per la Scuola Secondaria di Primo Grado (scuole medie). Questa specifica funge da "fonte di verità" per sviluppatori e agenti AI che lavorano sul progetto.
+Benvenuto nella specifica ufficiale di **Missione Previdenza**, l'escape room educativa digitale pensata per il Family Day INPS 2026. Questa specifica funge da "fonte di verità" per sviluppatori e agenti AI che lavorano sul progetto.
 
 ---
 

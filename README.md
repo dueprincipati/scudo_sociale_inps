@@ -37,7 +37,7 @@ L'app trasporta gli studenti in un futuro distopico del **2086**, dove il temibi
 ## 🎯 A chi è rivolto
 
 - Insegnanti di **Educazione Civica e Cittadinanza Attiva**
-- Classi delle **scuole medie** (11-14 anni)
+- Ragazzi e le loro famiglie al Family Day INPS 2026.
 - Laboratori didattici, aule digitali o attività di team building
 
 ---
