@@ -22,6 +22,7 @@ export default function App() {
   const [soundOn, setSoundOn] = useState(true);
   const [showTeacherPanel, setShowTeacherPanel] = useState(false);
   const [leaderboard, setLeaderboard] = useState<LeaderboardEntry[]>([]);
+  const [devMode, setDevMode] = useState(false);
   
   // Game team state
   const [teamState, setTeamState] = useState<TeamState>({
@@ -335,7 +336,7 @@ export default function App() {
           </div>
           <div>
             <h1 className="text-xs font-black text-slate-900 leading-tight uppercase tracking-wider">Missione Previdenza</h1>
-            <p className="text-[9px] text-slate-500 font-bold">Welfare Escape Room • INPS per le Scuole</p>
+            <p className="text-[9px] text-slate-500 font-bold">Welfare Escape Room • INPS per i ragazzi</p>
           </div>
         </div>
 
@@ -348,6 +349,15 @@ export default function App() {
             title={soundOn ? "Mutolo" : "Attiva Suoni"}
           >
             {soundOn ? <Volume2 className="w-4.5 h-4.5" /> : <VolumeX className="w-4.5 h-4.5" />}
+          </button>
+          
+          {/* Dev Mode Toggle */}
+          <button
+            onClick={() => setDevMode(!devMode)}
+            className={`p-2 rounded-xl cursor-pointer transition-colors ${devMode ? 'text-amber-600 bg-amber-50' : 'text-slate-500 hover:text-amber-600 hover:bg-slate-50'}`}
+            title="Modalità Sviluppatore"
+          >
+            <Settings className="w-4.5 h-4.5" />
           </button>
 
           {/* Teacher Guide Mode Button */}
@@ -380,7 +390,36 @@ export default function App() {
         </div>
       </header>
 
-      {/* Main Body Grid */}
+      {/* Developer Mode Banner */}
+      {devMode && (
+        <div className="bg-amber-100 border-b border-amber-300 p-2 flex flex-wrap gap-2 items-center justify-center text-xs print:hidden z-40">
+          <span className="font-bold text-amber-900 mr-2">⚙️ DEV MODE:</span>
+          <button onClick={() => setActiveStep('welcome')} className="bg-white border border-amber-300 px-2 py-1 rounded shadow-sm hover:bg-amber-50 text-amber-900 font-medium cursor-pointer">Welcome</button>
+          <button onClick={() => setActiveStep('victory')} className="bg-white border border-amber-300 px-2 py-1 rounded shadow-sm hover:bg-amber-50 text-amber-900 font-medium cursor-pointer">Victory</button>
+          <button onClick={() => setActiveStep('gameover')} className="bg-white border border-amber-300 px-2 py-1 rounded shadow-sm hover:bg-amber-50 text-amber-900 font-medium cursor-pointer">Game Over</button>
+          <div className="w-px h-4 bg-amber-300 mx-1"></div>
+          <span className="text-amber-800 text-[10px]">Puzzles:</span>
+          {puzzlesList.map(p => (
+            <button
+              key={`dev-puzzle-${p.id}`}
+              onClick={() => forceSkipToPuzzle(p.id)}
+              className={`border px-2 py-1 rounded shadow-sm cursor-pointer font-medium ${
+                activeStep === 'playing' && currentGameIndex === puzzlesList.indexOf(p) 
+                  ? 'bg-amber-500 text-white border-amber-600' 
+                  : 'bg-white hover:bg-amber-50 text-amber-900 border-amber-300'
+              }`}
+            >
+              {p.id}
+            </button>
+          ))}
+          <div className="w-px h-4 bg-amber-300 mx-1"></div>
+          <button onClick={() => {
+            setTeamState(prev => ({ ...prev, timeRemaining: prev.timeRemaining + 600 }));
+          }} className="bg-white border border-amber-300 px-2 py-1 rounded shadow-sm hover:bg-amber-50 text-amber-900 font-medium cursor-pointer">+10 Min</button>
+        </div>
+      )}
+
+      {/* Main Content Area */}
       <main className="flex-1 max-w-7xl mx-auto w-full px-4 md:px-8 py-3 flex flex-col justify-center h-full">
 
         <AnimatePresence mode="wait">
@@ -426,7 +465,7 @@ export default function App() {
                     Viaggio nel 2086: Salva lo Scudo Sociale
                   </p>
                   <p className="text-xs text-slate-500 max-w-xl mx-auto leading-relaxed">
-                    Un'escape room digitale interattiva progettata per le scuole medie d'Italia. 
+                    Un'escape room digitale interattiva per esplorare in modo coinvolgente come funziona lo scudo sociale del nostro Paese. 
                     Impara a cooperare col tuo gruppo, sconfiggi l'evasione e scopri le regole fondamentali del vivere comune.
                   </p>
                 </div>
@@ -459,12 +498,12 @@ export default function App() {
                       />
                     </div>
                     <div className="space-y-1">
-                      <label className="text-xs font-black text-slate-650 uppercase" htmlFor="school-class-input">Classe Scolastica (es: 2° A)</label>
+                      <label className="text-xs font-black text-slate-650 uppercase" htmlFor="school-class-input">Classe o Gruppo (es: 2° A)</label>
                       <input
                         id="school-class-input"
                         type="text"
                         required
-                        placeholder="Es: 2° A - Scuole Medie"
+                        placeholder="Es: 2° A / Squadra Blu"
                         value={teamState.schoolClass}
                         onChange={(e) => setTeamState({ ...teamState, schoolClass: e.target.value })}
                         className="w-full bg-slate-50 border-2 border-slate-200 rounded-2xl px-4 py-3 text-sm font-semibold focus:outline-none focus:border-blue-500 transition-colors"
@@ -898,8 +937,8 @@ export default function App() {
 
       {/* Humble Footer in line with non-hype rules */}
       <footer className="py-6 text-center text-[10px] text-slate-400 border-t border-slate-150 mt-12 bg-white print:hidden">
-        <p>Progetto Educativo di Educazione Civica sulle funzioni previdenziali ed INPS.</p>
-        <p className="mt-1 font-mono">Unione Nazionale Sviluppo Cittadinanza Attiva • Licenza Apache-2.0</p>
+        <p>Family Day INPS 18 giugno 2026</p>
+        <p className="mt-1 font-mono">Licenza Apache-2.0</p>
       </footer>
 
     </div>

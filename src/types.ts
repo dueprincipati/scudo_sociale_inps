@@ -8,7 +8,7 @@ export interface Puzzle {
   title: string;
   description: string;
   educationalTidbit: string;
-  mechanicType: 'balance' | 'icons' | 'decode' | 'boss' | 'payslip' | 'constitution';
+  mechanicType: 'balance' | 'icons' | 'decode' | 'boss' | 'payslip' | 'constitution' | 'exclusion';
   question: string;
   correctAnswer: string;
   answerVariants?: string[];

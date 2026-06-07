@@ -48,6 +48,9 @@ export const PuzzleStep: React.FC<PuzzleStepProps> = ({ puzzle, teamState, onSol
   // Puzzle 6: Boss Fight contract clauses active
   const [bossClauses, setBossClauses] = useState<string[]>([]);
 
+  // Exclusion Mechanic state
+  const [excludedWords, setExcludedWords] = useState<string[]>([]);
+
   // Reset states when puzzle changes
   useEffect(() => {
     setUserInput(isSolved ? puzzle.correctAnswer : '');
@@ -61,6 +64,7 @@ export const PuzzleStep: React.FC<PuzzleStepProps> = ({ puzzle, teamState, onSol
     setSelectedPayslipKey(isSolved && puzzle.mechanicType === 'payslip' ? 'inps' : null);
     setChainLetters(isSolved && puzzle.id === 5 ? { 4: 'D', 5: 'A', 8: 'E' } : {});
     setBossClauses(isSolved && puzzle.mechanicType === 'boss' ? ['contributi', 'infortuni', 'ferie', 'paga'] : []);
+    setExcludedWords([]);
   }, [puzzle, isSolved]);
 
   const handleIconToggle = (id: number) => {
@@ -88,6 +92,31 @@ export const PuzzleStep: React.FC<PuzzleStepProps> = ({ puzzle, teamState, onSol
       setBossClauses(bossClauses.filter(c => c !== clause));
     } else {
       setBossClauses([...bossClauses, clause]);
+    }
+  };
+
+  const handleExclusionToggle = (word: string) => {
+    if (isSolved) return;
+    playSound.playClick();
+    
+    // The objective is to click to ELIMINATE the wrong words.
+    if (word === puzzle.correctAnswer) {
+      playSound.playFailure();
+      onWrongAttempt(puzzle.id);
+      setErrorFeedback(`Attenzione: non scartare l'opzione "${word}"! È quella corretta! (-40 XP)`);
+    } else {
+      if (!excludedWords.includes(word)) {
+        const newExcluded = [...excludedWords, word];
+        setExcludedWords(newExcluded);
+        playSound.playHint();
+        setErrorFeedback(null);
+        
+        // Se ha scartato tutte le 3 parole sbagliate (e ce ne sono 4 in totale)
+        if (puzzle.mechanicData && puzzle.mechanicData.options && newExcluded.length === puzzle.mechanicData.options.length - 1) {
+          setUserInput(puzzle.correctAnswer);
+          playSound.playSuccess();
+        }
+      }
     }
   };
 
@@ -256,57 +285,54 @@ export const PuzzleStep: React.FC<PuzzleStepProps> = ({ puzzle, teamState, onSol
 
         {/* Dynamic Mechanic Render */}
         <div className="mb-6 text-left">
-          {puzzle.mechanicType === 'balance' && (
+          {puzzle.mechanicType === 'exclusion' && puzzle.mechanicData && (
             <div className="space-y-4">
-              <p className="text-xs text-slate-600 leading-relaxed">
-                La catena ha {puzzle.correctAnswer.length} nodi di energia fluttuanti. Ciascun nodo si attiva e si illumina quando digiti le lettere della chiave di sblocco:
-              </p>
-              
-              {/* Graphic representation of generation flow */}
-              <div className="flex flex-col xl:flex-row items-center gap-4 xl:gap-5 justify-center bg-slate-50 p-4 rounded-2xl border border-slate-105 shadow-inner">
-                {/* Generation A Card */}
-                <div className="flex flex-col items-center p-3 bg-blue-50/80 border border-blue-100 rounded-2xl text-center w-full xl:w-40 shadow-sm shrink-0">
-                  <span className="font-extrabold text-[10px] text-blue-800 tracking-wider uppercase">Generazione A</span>
-                  <p className="text-[9px] text-slate-500 mt-0.5">I Lavoratori di oggi</p>
-                  <span className="text-[10px] font-black text-blue-600 mt-2 bg-white px-2 py-0.5 rounded-lg border border-blue-200/50 shadow-sm">Versano (Contributi)</span>
-                </div>
-                
-                {/* Visual Connector Flow */}
-                <div className="flex items-center gap-1 md:gap-1.5 text-slate-300 py-2 flex-wrap justify-center max-w-lg">
-                  {puzzle.correctAnswer.split("").map((ch, i) => {
-                    const cleanUserInput = userInput.toUpperCase().replace(/[^A-Z0-9]/g, '');
-                    const charAtPos = cleanUserInput[i] || '';
-                    const hasInput = charAtPos !== '';
-                    return (
-                      <React.Fragment key={i}>
-                        <div className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-xs transition-all duration-300 ${
-                          isSolved
-                            ? 'bg-emerald-500 text-white shadow-md border border-emerald-400'
-                            : hasInput
-                              ? 'bg-blue-500 text-white shadow-md border border-blue-400 animate-pulse'
-                              : 'bg-white text-slate-400 border border-slate-300 border-dashed hover:border-slate-400'
-                        }`}>
-                          {isSolved ? ch : (charAtPos || '?')}
-                        </div>
-                        {i !== puzzle.correctAnswer.length - 1 && (
-                          <div className={`h-0.5 w-3 transition-colors duration-300 ${
-                            isSolved
-                              ? 'bg-emerald-400'
-                              : i < cleanUserInput.length
-                                ? 'bg-blue-400'
-                                : 'bg-slate-200'
-                          }`} />
-                        )}
-                      </React.Fragment>
-                    );
-                  })}
+              <div className="bg-amber-50 border-l-4 border-amber-500 p-3 rounded-r-xl">
+                <p className="text-sm font-bold text-amber-900 mb-1">🔍 INDAGINE LOGICA</p>
+                <p className="text-xs text-amber-800 leading-relaxed">
+                  Leggi gli indizi ed <strong>elimina le opzioni errate cliccandole</strong>. Attenzione: se provi a eliminare la parola giusta perderai punti! Scartate le 3 parole sbagliate, quella corretta si inserirà in automatico.
+                </p>
+              </div>
+
+              <div className="grid md:grid-cols-2 gap-4">
+                {/* Clues Board */}
+                <div className="bg-slate-800 rounded-2xl p-4 shadow-inner text-slate-200 border border-slate-700">
+                  <h4 className="text-xs font-black uppercase text-amber-400 mb-3 flex items-center gap-2">
+                    <BookOpen className="w-4 h-4" /> Appunti di Viaggio
+                  </h4>
+                  <ul className="space-y-2.5">
+                    {puzzle.mechanicData.clues.map((clue: string, i: number) => (
+                      <li key={`clue-${i}`} className="text-[10px] leading-tight border-b border-slate-700 pb-2 last:border-0 last:pb-0">
+                        {clue}
+                      </li>
+                    ))}
+                  </ul>
                 </div>
 
-                {/* Generation B Card */}
-                <div className="flex flex-col items-center p-3 bg-emerald-50/80 border border-emerald-100 rounded-2xl text-center w-full xl:w-40 shadow-sm shrink-0">
-                  <span className="font-extrabold text-[10px] text-emerald-800 tracking-wider uppercase">Generazione B</span>
-                  <p className="text-[9px] text-slate-500 mt-0.5">I Pensionati di oggi</p>
-                  <span className="text-[10px] font-black text-emerald-600 mt-2 bg-white px-2 py-0.5 rounded-lg border border-emerald-200 shadow-sm">Ricevono lo Scudo</span>
+                {/* Options Cards */}
+                <div className="grid grid-cols-2 gap-3">
+                  {puzzle.mechanicData.options.map((opt: string) => {
+                    const isExcluded = excludedWords.includes(opt);
+                    const isSelectedAndCorrect = isSolved || userInput === opt;
+                    
+                    return (
+                      <button
+                        key={opt}
+                        type="button"
+                        disabled={isSolved || isExcluded}
+                        onClick={() => handleExclusionToggle(opt)}
+                        className={`p-3 rounded-xl border-2 flex flex-col items-center justify-center transition-all ${
+                          isSelectedAndCorrect
+                            ? 'bg-emerald-500 border-emerald-600 text-white shadow-lg scale-105'
+                            : isExcluded
+                              ? 'bg-slate-100 border-slate-300 text-slate-400 opacity-50 line-through cursor-not-allowed'
+                              : 'bg-white border-blue-200 hover:border-blue-400 text-blue-900 hover:bg-blue-50 cursor-pointer shadow-sm'
+                        }`}
+                      >
+                        <span className="font-black tracking-wider text-xs">{opt}</span>
+                      </button>
+                    );
+                  })}
                 </div>
               </div>
             </div>
@@ -407,11 +433,11 @@ export const PuzzleStep: React.FC<PuzzleStepProps> = ({ puzzle, teamState, onSol
                   <span className="text-[10px] font-semibold px-2.5 py-1 rounded-xl border leading-relaxed text-center sm:text-left">
                     {iconTargetSum !== null && selectedSum > iconTargetSum ? (
                       <span className="text-rose-600 bg-rose-50 border-rose-200 block px-1.5">
-                        Somma troppo alta ({selectedSum} &gt; 1898). Hai incluso dei servizi extra!
+                        Somma troppo alta ({selectedSum} &gt; {puzzle.id === 9 ? '???' : iconTargetSum}). Hai incluso tessere non necessarie!
                       </span>
                     ) : (
                       <span className="text-amber-700 bg-amber-50 border-amber-100 block px-1.5">
-                        Somma parziale ({selectedSum} / 1898). Seleziona solo le 4 tessere.
+                        Somma parziale: {selectedSum}. {puzzle.id === 9 ? 'Seleziona le 3 tessere corrette.' : `(Obiettivo: ${iconTargetSum})`}
                       </span>
                     )}
                   </span>
@@ -813,13 +839,16 @@ export const PuzzleStep: React.FC<PuzzleStepProps> = ({ puzzle, teamState, onSol
                 /* Enigma 8, 10, 12: Classic Decoding Puzzle with Input Character Syncing */
                 <div className="space-y-3">
                   <p className="text-xs text-slate-600 leading-relaxed text-center max-w-md mx-auto">
-                    Risolvi il quesito e inserisci il codice decifrato. Le caselle mostreranno i caratteri man mano che li digiti nel campo di testo sottostante.
+                    Risolvi il quesito e inserisci il codice decifrato nel campo in basso. Ogni lettera corretta che digiti si illuminerà in tutte le posizioni in cui compare!
                   </p>
 
                   <div className="flex justify-center flex-wrap gap-1.5 py-3 bg-slate-50 rounded-2xl border border-slate-200 max-w-md mx-auto px-3 shadow-inner">
                     {(puzzle.correctAnswer || '').split('').map((char, index) => {
-                      const hasTyped = userInput && userInput[index];
-                      const displayChar = isSolved ? char : (hasTyped ? userInput[index].toUpperCase() : '•');
+                      const cleanInput = (userInput || '').toUpperCase();
+                      const charUpper = char.toUpperCase();
+                      // Only reveal if the char is actually a letter/number and it's included in the user's input
+                      const isRevealed = charUpper !== ' ' && cleanInput.includes(charUpper);
+                      const displayChar = isSolved ? char : (isRevealed ? charUpper : '•');
                       
                       return (
                         <div
@@ -827,8 +856,8 @@ export const PuzzleStep: React.FC<PuzzleStepProps> = ({ puzzle, teamState, onSol
                           className={`w-8 h-8 rounded-xl flex items-center justify-center border-2 transition-all font-mono font-bold text-sm ${
                             isSolved
                               ? 'border-emerald-500 bg-emerald-50 text-emerald-700'
-                              : hasTyped
-                                ? 'border-blue-500 bg-blue-50 text-blue-700'
+                              : isRevealed
+                                ? 'border-blue-500 bg-blue-50 text-blue-700 shadow-inner scale-105'
                                 : 'border-slate-200 bg-white text-slate-300'
                           }`}
                         >
@@ -1014,11 +1043,13 @@ export const PuzzleStep: React.FC<PuzzleStepProps> = ({ puzzle, teamState, onSol
                 id={`puzzle-answer-input`}
                 type="text"
                 placeholder={
-                  puzzle.mechanicType === 'icons'
-                    ? `Es: ${iconTargetSum ?? '1898'}`
-                    : puzzle.mechanicType === 'boss' && bossClauses.length < 4
-                      ? "Attiva prima tutte le 4 tessere delle tutele..."
-                      : "Rispondi in MAIUSCOLO"
+                  puzzle.mechanicType === 'exclusion'
+                    ? "Clicca la parola giusta o digitala..."
+                    : puzzle.mechanicType === 'icons'
+                      ? `Es: ${iconTargetSum ?? '1898'}`
+                      : puzzle.mechanicType === 'boss' && bossClauses.length < 4
+                        ? "Attiva prima tutte le 4 tessere delle tutele..."
+                        : "Rispondi in MAIUSCOLO"
                 }
                 value={userInput}
                 onChange={(e) => {

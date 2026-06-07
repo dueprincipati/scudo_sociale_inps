@@ -6,9 +6,17 @@ export const puzzlesList: Puzzle[] = [
     title: "Enigma 1: Il Flusso Generazionale",
     description: "La macchina del tempo vi ha catapultati in un'epoca alternativa in cui anziani e lavoratori non si parlano più. Il motore del tempo, per ripartire, ha bisogno di bilanciare la 'Rete del Sostegno'. Per far funzionare il Welfare, dovrete capire che l'INPS funziona come un'incredibile staffetta di solidarietà!",
     educationalTidbit: "Il 'Patto tra Generazioni' (noto anche come sistema a ripartizione) prevede che i lavoratori di oggi paghino, tramite i propri contributi, le pensioni e l'assistenza di chi oggi è in pensione. Domani, quando voi lavorerete, sarete protetti dai contributi di chi lavorerà dopo di voi. È una catena indistruttibile di solidarietà umana!",
-    mechanicType: "balance",
-    question: "Segui il flusso: se i LAVORATORI attivi versano ENERGIA nello Scudo e i PENSIONATI la ricevono, quale parola chiave sancisce questo legame indissolubile nel tempo? (Trovate la parola nascosta decifrando le lettere collegate al flusso attivo: P - A - T - T - O)",
+    mechanicType: "exclusion",
+    question: "Leggi i 3 indizi sulla lavagna investigativa ed elimina le parole errate. Qual è la parola corretta?",
     correctAnswer: "PATTO",
+    mechanicData: {
+      options: ["TASSA", "REGALO", "FONDO", "PATTO"],
+      clues: [
+        "1. Non è un prelievo forzoso a fondo perduto senza ritorno.",
+        "2. Non è un dono gratuito elargito senza regole.",
+        "3. Non è un salvadanaio chiuso in cui metti i soldi solo per te stesso."
+      ]
+    },
     answerVariants: [
       "PATTO TRA GENERAZIONI",
       "PATTO GENERAZIONALE",
@@ -49,14 +57,14 @@ export const puzzlesList: Puzzle[] = [
     id: 3,
     title: "Enigma 3: La Bussola della Costituzione",
     description: "Il computer quantistico della macchina del tempo esige di verificare le radici storiche dello Scudo Sociale. Tutto ha inizio nel 1948 con l'entrata in vigore della carta costituzionale dello Stato italiano! C'è una norma fondamentale che sancisce una promessa solenne della Repubblica: proteggere ogni cittadino che incontra gravi difficoltà nella vita.",
-    educationalTidbit: "L'Articolo 38 della Costituzione Italiana è lo scudo dei più deboli: stabilisce che ogni cittadino inabile al lavoro o privo di mezzi ha diritto al sostegno, e che i lavoratori hanno diritto alla previdenza in caso di infortunio, malattia, invalidità, disoccupazione e vecchiaia. È il fondamento etico del nostro sistema sociale!",
+    educationalTidbit: "Un Articolo fondamentale della Costituzione Italiana funge da scudo per i più deboli: stabilisce che ogni cittadino inabile al lavoro o privo di mezzi ha diritto al sostegno, e che i lavoratori hanno diritto alla previdenza in caso di infortunio, malattia, invalidità, disoccupazione e vecchiaia. È il fondamento etico del nostro sistema sociale!",
     mechanicType: "constitution",
     question: "Identifica il numero di questo pilastro costituzionale. Qual è l'articolo della Costituzione Italiana che garantisce l'assistenza e la previdenza sociale ai cittadini svantaggiati o inabili? (Digita il numero corrispondente).",
     correctAnswer: "38",
     hints: [
-      { id: 1, text: "L'articolo viene citato esplicitamente nella pillola di Educazione Civica qui sopra!" },
-      { id: 2, text: "Si trova tra l'articolo trentasette (diritti delle lavoratrici) e l'articolo trentanove (libertà dell'organizzazione sindacale)." },
-      { id: 3, text: "Il numero magico è 38. Digitatelo per stabilizzare il portale quantistico!" }
+      { id: 1, text: "I principi di questo articolo sono citati esplicitamente nella pillola di Educazione Civica qui sopra. Ora devi trovarne il numero esatto esplorando la Costituzione!" },
+      { id: 2, text: "Il suo numero è maggiore dell'articolo che tutela la salute (Art. 32) e minore di quello sul pagamento delle tasse (Art. 53)." },
+      { id: 3, text: "La somma delle due cifre che compongono questo articolo fa 11." }
     ]
   },
   {
@@ -110,13 +118,13 @@ export const puzzlesList: Puzzle[] = [
     title: "Enigma 7: Il Labirinto dei Contributi",
     description: "La macchina del tempo ora vi colloca in un labirinto di conti: per procedere dovrete bilanciare entrate e uscite di più nodi contemporaneamente, trovando la parola che riassume la sostenibilità del sistema.",
     educationalTidbit: "La sostenibilità del sistema pensionistico dipende dal rapporto tra lavoratori attivi e beneficiari. Politiche efficaci e contributi regolari mantengono il sistema in equilibrio e garantiscono pensioni future.",
-    mechanicType: "balance",
-    question: "Osserva gli 8 nodi energetici e leggi le lettere illuminate nell'ordine corretto per scoprire il valore-guida del sistema (risposta in MAIUSCOLO).",
+    mechanicType: "decode",
+    question: "Decifra l'anagramma per scoprire il valore-guida del sistema: S I B I L I T A O S S T E N (Rispondi in MAIUSCOLO senza spazi).",
     correctAnswer: "SOSTENIBILITA",
     hints: [
-      { id: 1, text: "Conta quanti nodi rimangono attivi quando il flusso è stabile: vi aiuterà a ricostruire l'ordine delle lettere." },
-      { id: 2, text: "Pensa a lunghi orizzonti temporali e al rapporto entrate/uscite: è una parola lunga, senza spazi." },
-      { id: 3, text: "La parola è SOSTENIBILITA (senza accenti, in MAIUSCOLO)." }
+      { id: 1, text: "È una parola molto lunga (13 lettere) che indica la capacità di durare nel tempo." },
+      { id: 2, text: "Inizia con 'SOSTENI' e finisce con 'TA'." },
+      { id: 3, text: "La parola è SOSTENIBILITA." }
     ]
   },
 
@@ -141,12 +149,12 @@ export const puzzlesList: Puzzle[] = [
     description: "Un vecchio registratore chiede di risolvere un calcolo composto che simula l'accumulo di contributi e interessi: dimostrate che sapete ragionare per passaggi logici.",
     educationalTidbit: "I contributi investiti e l'interesse tecnico determinano la sostenibilità a lungo termine. Capire la matematica dietro ai conti pubblici aiuta a interpretare le scelte politiche.",
     mechanicType: "icons",
-    question: "Seleziona ESATTAMENTE le 3 tessere che, sommate, danno il valore target 2650. Inserite il valore risultante come codice (4 cifre).",
+    question: "Quali sono le 3 componenti strutturali (non temporanee né emergenziali) che garantiscono la sostenibilità a lungo termine? Seleziona le 3 tessere corrette. La loro somma genererà la chiave numerica di sblocco.",
     correctAnswer: "2650",
     hints: [
-      { id: 1, text: "Cerca tessere con valori alti e prova combinazioni da 3 elementi." },
-      { id: 2, text: "Pensa a 1500 + 800 + 350 = 2650 (esempio di combinazione possibile)." },
-      { id: 3, text: "La somma corretta è 2650: digitate il numero per sbloccare il nodo." }
+      { id: 1, text: "Evita le misure 'temporanee' o i fondi di 'emergenza': la previdenza si basa su fondamenta solide e a lungo termine." },
+      { id: 2, text: "Devi selezionare: Fondo Storico, Fondi di Investimento e Accantonamenti Tecnici." },
+      { id: 3, text: "Selezionando queste 3 tessere otterrai la somma di 2650. Questo è il codice da inserire!" }
     ]
     ,
     mechanicData: {
@@ -166,27 +174,27 @@ export const puzzlesList: Puzzle[] = [
     description: "Davanti a voi due politiche alternative: una aumenta le tasse per sostenere subito i benefici, l'altra incentiva l'occupazione per aumentare i contributi futuri. Quale parola sintetizza la scelta che preserva diritti e crescita insieme?",
     educationalTidbit: "Bilanciare equità e crescita è la sfida delle politiche pubbliche. Strategie miste possono coniugare protezione sociale e sviluppo economico.",
     mechanicType: "decode",
-    question: "Inserite la parola che meglio rappresenta una soluzione bilanciata (MAIUSCOLO, senza accenti).",
+    question: "Per coniugare diritti e crescita, non basta spendere: bisogna destinare le risorse di oggi per generare valore domani. Trova la parola di 12 lettere (inizia con IN e finisce con TO) che definisce questa fondamentale operazione economica e sociale.",
     correctAnswer: "INVESTIMENTO",
     hints: [
-      { id: 1, text: "Pensate a una parola che parla di mettere risorse oggi per ottenere un ritorno domani." },
-      { id: 2, text: "È una parola usata sia in economia che nelle politiche pubbliche: INVESTIMENTO." },
-      { id: 3, text: "Digitate INVESTIMENTO per procedere." }
+      { id: 1, text: "È l'opposto di 'spesa improduttiva'. In finanza, lo fai per far fruttare il capitale nel tempo." },
+      { id: 2, text: "Unendo le parole 'IN', 'VESTI' e 'MENTO' otterrai la soluzione." },
+      { id: 3, text: "La parola esatta da digitare è INVESTIMENTO." }
     ]
   },
 
   {
     id: 11,
-    title: "Enigma 11: Lo Scontro Finale con l'Evasore",
-    description: "Il Signor Evasore sferra il suo attacco definitivo guidando un'orda di virus per distruggere il portale. Per sigillarlo e sconfiggerlo una volta per tutte, dovrete attivare lo Scudo Collettivo dello Stato.",
-    educationalTidbit: "Contratti collettivi e regole chiare permettono di proteggere i lavoratori e combattere l'evasione. La contrattazione aiuta a definire tutele standard per tutti.",
-    mechanicType: "boss",
-    question: "Inserite DUE parole separate da uno spazio: la prima è 'COLLETTIVO' e la seconda è 'CONTRATTO' (MAIUSCOLO).",
-    correctAnswer: "COLLETTIVO CONTRATTO",
+    title: "Enigma 11: Il Cuore del Sistema",
+    description: "Siete quasi giunti al termine. Il portale temporale vi chiede di identificare il nome completo di questa imponente macchina di solidarietà e protezione pubblica che avete contribuito a riparare.",
+    educationalTidbit: "Il 'Welfare State' (o Stato Sociale) è il sistema attraverso cui una nazione si prende cura dei suoi cittadini, garantendo salute, previdenza, assistenza e istruzione pubblica per tutti.",
+    mechanicType: "decode",
+    question: "Trovate la definizione italiana di 12 lettere (divise in due parole) che traduce il concetto di 'Welfare State'. Inizia con 'STA' e finisce con 'ALE'. (Digitate le due parole separate da uno spazio).",
+    correctAnswer: "STATO SOCIALE",
     hints: [
-      { id: 1, text: "Pensate a parole legate alla contrattazione e alla protezione di gruppo." },
-      { id: 2, text: "La soluzione combina 'COLLETTIVO' + 'CONTRATTO' per annientare l'Evasore e i suoi scagnozzi." },
-      { id: 3, text: "Digitate esattamente: COLLETTIVO CONTRATTO" }
+      { id: 1, text: "È composto da due parole. La prima è sinonimo di 'Nazione', la seconda significa 'relativo alla società'." },
+      { id: 2, text: "L'anagramma è: A A C E I L O O S S T T." },
+      { id: 3, text: "La risposta esatta da digitare è STATO SOCIALE." }
     ]
   },
 
