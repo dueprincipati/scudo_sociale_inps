@@ -3,213 +3,217 @@ import { Puzzle } from '../types';
 export const puzzlesList: Puzzle[] = [
   {
     id: 1,
-    title: "Enigma 1: Il Flusso Generazionale",
-    description: "La macchina del tempo vi ha catapultati in un'epoca alternativa in cui anziani e lavoratori non si parlano più. Il motore del tempo, per ripartire, ha bisogno di bilanciare la 'Rete del Sostegno'. Per far funzionare il Welfare, dovrete capire che l'INPS funziona come un'incredibile staffetta di solidarietà!",
-    educationalTidbit: "Il 'Patto tra Generazioni' (noto anche come sistema a ripartizione) prevede che i lavoratori di oggi paghino, tramite i propri contributi, le pensioni e l'assistenza di chi oggi è in pensione. Domani, quando voi lavorerete, sarete protetti dai contributi di chi lavorerà dopo di voi. È una catena indistruttibile di solidarietà umana!",
+    title: "Enigma 1: Modelli Macroeconomici",
+    description: "Per riattivare i database storici dell'INPS, dovete calibrare l'architettura del sistema. Nel 2086 si è persa la memoria di come le vecchie generazioni mantenevano quelle nuove.",
+    educationalTidbit: "In Italia vige un sistema 'a ripartizione' (pay-as-you-go): i contributi dei lavoratori attivi finanziano le pensioni correnti, basandosi su un patto intergenerazionale. Si differenzia dal sistema 'a capitalizzazione' dove ognuno accantona per sé in fondi privati.",
     mechanicType: "exclusion",
-    question: "Leggi i 3 indizi sulla lavagna investigativa ed elimina le parole errate. Qual è la parola corretta?",
-    correctAnswer: "PATTO",
-    mechanicData: {
-      options: ["TASSA", "REGALO", "FONDO", "PATTO"],
-      clues: [
-        "1. Non è un prelievo forzoso a fondo perduto senza ritorno.",
-        "2. Non è un dono gratuito elargito senza regole.",
-        "3. Non è un salvadanaio chiuso in cui metti i soldi solo per te stesso."
-      ]
-    },
-    answerVariants: [
-      "PATTO TRA GENERAZIONI",
-      "PATTO GENERAZIONALE",
-      "IL PATTO TRA GENERAZIONI",
-      "IL PATTO GENERAZIONALE",
-      "PATTO TRA LE GENERAZIONI",
-      "IL PATTO TRA LE GENERAZIONI",
-      "PATTO INTERGENERAZIONALE",
-      "IL PATTO INTERGENERAZIONALE",
-      "PATTO TRA GENERAZIONE",
-      "IL PATTO TRA GENERAZIONE",
-      "PATTO TRA LE GENERAZIONE",
-      "IL PATTO TRA LE GENERAZIONE",
-      "PATTO DELLE GENERAZIONI",
-      "IL PATTO DELLE GENERAZIONI"
-    ],
+    question: "Identifica il vero pilastro del sistema pubblico italiano scartando le definizioni errate o incompatibili con l'equilibrio strutturale.",
+    correctAnswer: "RIPARTIZIONE",
     hints: [
-      { id: 1, text: "Guarda le lettere illuminate lungo la linea di flusso che connette i lavoratori del presente con i cittadini del passato." },
-      { id: 2, text: "La parola descrive un accordo d'onore e solidarietà... un '_____ tra Generazioni'." },
-      { id: 3, text: "La parola segreta è proprio 'PATTO'! Digitatela in MAIUSCOLO per sbloccare il primo trasmettitore!" }
-    ]
+      { id: 1, text: "Non è un sistema basato su conti individuali azionari (Capitalizzazione)." },
+      { id: 2, text: "Non si basa sull'emissione incontrollata di moneta o su deficit cronico." },
+      { id: 3, text: "La risposta è il sistema in cui le risorse vengono 'ripartite' tra le generazioni." }
+    ],
+    mechanicData: {
+      clues: [
+        "Non è un sistema basato su conti individuali azionari (Capitalizzazione).",
+        "Non si basa sull'emissione incontrollata di moneta o su deficit cronico.",
+        "Non è un sussidio incondizionato, né si regge sull'indebitamento estero continuo."
+      ],
+      options: [
+        "CAPITALIZZAZIONE",
+        "STAMPA MONETARIA",
+        "SUSSIDIO UNIVERSALE",
+        "DEBITO ESTERO",
+        "RIPARTIZIONE"
+      ]
+    }
   },
+
   {
     id: 2,
-    title: "Enigma 2: Il Salvadanaio della Sicurezza",
-    description: "Il computer di bordo richiede la chiave d'accesso al 'Salvadanaio dei Superpoteri'. Molti credono che i contributi pagati all'INPS siano solo tasse perse nel vuoto, ma in realtà sono PE (Punti Esperienza) che sbloccano dei veri e propri Superpoteri di Protezione per la vostra vita!",
-    educationalTidbit: "I contributi previdenziali non sono tasse generiche, ma una quota dello stipendio messa da parte per proteggerci. La previdenza in Italia nasce ufficialmente nel 1898 con la fondazione della Cassa Nazionale per l'Invalidità e la Vecchiaia degli Operai. Questo fondo collettivo pagava le pensioni e garantiva assistenza in caso di malattia, infortuni, maternità e vecchiaia. Abbonamenti a servizi di streaming o sconti commerciali, invece, non sono diritti sociali!",
+    title: "Enigma 2: Il Bilancio Attuariale",
+    description: "Il calcolatore quantistico ha bisogno dei parametri esatti di bilancio. Dovete inserire 4 variabili macroeconomiche per calibrare il gettito.",
+    educationalTidbit: "Il bilancio previdenziale tiene conto di entrate (contributi di lavoratori e imprese, trasferimenti statali) e uscite o svalutazioni (inflazione). L'equilibrio richiede calcoli complessi.",
     mechanicType: "icons",
-    question: "Seleziona ESATTAMENTE e SOLO i 4 veri Superpoteri garantiti dai contributi previdenziali. Somma i codici temporali delle tessere corrette per sbloccare la chiave numerica! (La risposta è un anno storico composto da 4 cifre).",
-    correctAnswer: "1898",
+    question: "Seleziona le 4 variabili corrette che, sommate algebricamente, forniscono un surplus attuariale esattamente pari a 1550.",
+    correctAnswer: "1550",
     hints: [
-      { id: 1, text: "I 4 veri superpoteri sono: Pensione di Vecchiaia, Sostegno in Maternità/Paternità, Indennità di Malattia e Sicurezza Infortuni. Scarta i bonus futili come 'Netflix gratis' o 'Sconto Videogame'!" },
-      { id: 2, text: "Somma i numeri associati alle 4 tessere corrette: cerca i valori più alti tra le tessere che rappresentano vere tutele e somma solo quelli." },
-      { id: 3, text: "La somma vi porterà a un anno storico importante per la nascita di alcune tutele previdenziali in Italia. Controlla bene i calcoli!" }
-    ]
+      { id: 1, text: "Attenzione ai valori negativi: l'inflazione riduce il valore reale dei fondi." },
+      { id: 2, text: "Dovete sommare le tre voci positive e sottrarre quella negativa." },
+      { id: 3, text: "La combinazione è: Lavoratori (850) + Imprese (400) + Stato (500) - Inflazione (-200)." }
+    ],
+    mechanicData: {
+      iconTessera: [
+        { id: 1, label: "Quota Lavoratori Dipendenti", val: 850, isCorrect: true, power: "Contributi base" },
+        { id: 2, label: "Quota Datoriale", val: 400, isCorrect: true, power: "Contributi delle aziende" },
+        { id: 3, label: "Trasferimenti Statali", val: 500, isCorrect: true, power: "Intervento fiscalità generale" },
+        { id: 4, label: "Inflazione e Svalutazione", val: -200, isCorrect: true, power: "Erosione del capitale" },
+        { id: 5, label: "Finanza Derivata Speculativa", val: 300, isCorrect: false, power: "Rischio inaccettabile" },
+        { id: 6, label: "Taglio Lineare Servizi", val: -50, isCorrect: false, power: "Austerità eccessiva" }
+      ]
+    }
   },
+
   {
     id: 3,
-    title: "Enigma 3: La Bussola della Costituzione",
-    description: "Il computer quantistico della macchina del tempo esige di verificare le radici storiche dello Scudo Sociale. Tutto ha inizio nel 1948 con l'entrata in vigore della carta costituzionale dello Stato italiano! C'è una norma fondamentale che sancisce una promessa solenne della Repubblica: proteggere ogni cittadino che incontra gravi difficoltà nella vita.",
-    educationalTidbit: "Un Articolo fondamentale della Costituzione Italiana funge da scudo per i più deboli: stabilisce che ogni cittadino inabile al lavoro o privo di mezzi ha diritto al sostegno, e che i lavoratori hanno diritto alla previdenza in caso di infortunio, malattia, invalidità, disoccupazione e vecchiaia. È il fondamento etico del nostro sistema sociale!",
+    title: "Enigma 3: Crittografia Costituzionale",
+    description: "I diritti inalienabili sono criptati. Per decifrarli, dovrete combinare matematicamente le disposizioni della Costituzione Italiana.",
+    educationalTidbit: "La Costituzione è un sistema interconnesso: l'Articolo 1 stabilisce il fondamento sul lavoro, l'Articolo 32 la salute, e l'Articolo 38 chiude il cerchio definendo i diritti previdenziali e assistenziali.",
     mechanicType: "constitution",
-    question: "Identifica il numero di questo pilastro costituzionale. Qual è l'articolo della Costituzione Italiana che garantisce l'assistenza e la previdenza sociale ai cittadini svantaggiati o inabili? (Digita il numero corrispondente).",
+    question: "Il numero dell'Articolo che tutela l'assistenza sociale è un'equazione. Somma il numero dell'Articolo che tutela la salute (Art. ??) al numero dell'Articolo che sancisce la Repubblica fondata sul lavoro (Art. ??) e aggiungi 5. Seleziona l'articolo risultante.",
     correctAnswer: "38",
     hints: [
-      { id: 1, text: "I principi di questo articolo sono citati esplicitamente nella pillola di Educazione Civica qui sopra. Ora devi trovarne il numero esatto esplorando la Costituzione!" },
-      { id: 2, text: "Il suo numero è maggiore dell'articolo che tutela la salute (Art. 32) e minore di quello sul pagamento delle tasse (Art. 53)." },
-      { id: 3, text: "La somma delle due cifre che compongono questo articolo fa 11." }
+      { id: 1, text: "Trova prima l'Articolo sulla Salute e quello sul Lavoro." },
+      { id: 2, text: "Salute = Art. 32. Lavoro = Art. 1." },
+      { id: 3, text: "L'equazione è 32 + 1 + 5 = 38. Seleziona l'Articolo 38." }
     ]
   },
+
   {
     id: 4,
-    title: "Enigma 4: La Busta Paga e lo Scudo del Lavoro",
-    description: "Incontrate un ragazzo che ha appena iniziato a lavorare: 'Il mio stipendio sulla carta (lordo) è di 1500 euro, ma in banca ricevo un bonifico (netto) di 1200 euro! Perché mancano 300 euro, dove vanno a finire questi soldi? Servono forse a finanziare tutele e assicurazioni per il mio futuro lavorativo?'. Aiutatelo a scoprire il misterioso scudo di riserva che sta finanziando ogni mese!",
-    educationalTidbit: "La differenza tra cifra lorda e netta in busta paga non è un furto, ma rappresenta in gran parte i contributi previdenziali INPS! Questi soldi formano una polizza collettiva. Uno dei servizi principali finanziati è la protezione mensile contro la disoccupazione involontaria. Per scoprire la parola chiave, trova la sigla formata dalle lettere iniziali della sua denominazione ufficiale: **N**uova **A**ssicurazione **S**ociale **P**er l'**I**mpiego.",
+    title: "Enigma 4: L'Analisi Fiscale",
+    description: "I terminali di erogazione sono bloccati da un errore di calcolo dell'imponibile. È necessario ricalcolare esattamente l'aliquota di trattenuta ai fini FAP (Fondo Pensioni Lavoratori Dipendenti).",
+    educationalTidbit: "L'aliquota contributiva generale a carico del lavoratore dipendente è del 9,19% (mentre il resto, circa il 23,81%, è a carico del datore di lavoro). Saper leggere la busta paga è fondamentale per la cittadinanza economica.",
     mechanicType: "payslip",
-    question: "Trova le iniziali della denominazione ufficiale del sussidio di disoccupazione per svelare l'acronimo di 5 lettere: N _ _ _ I (Scrivi in MAIUSCOLO).",
-    correctAnswer: "NASPI",
+    question: "Individuate l'imponibile lordo nel documento. Calcolate l'aliquota contributiva standard a carico del lavoratore (9,19%) e arrotondate l'importo per ottenere la trattenuta INPS esatta (ignorando i decimali finali). Inserite questa cifra come codice di sblocco.",
+    correctAnswer: "137",
     hints: [
-      { id: 1, text: "La sigla è l'acronimo di 'Nuova Assicurazione Sociale per l'Impiego'." },
-      { id: 2, text: "Prendi la prima letterea di ciascuna parola: Nuova (N), Assicurazione (A), Sociale (S), Per l' (P), Impiego (I)." },
-      { id: 3, text: "Unisci le iniziali delle parole: Nuova Assicurazione Sociale Per l'Impiego. Otterrete la sigla di 5 lettere da inserire." }
+      { id: 1, text: "L'imponibile lordo mostrato è 1500,00 €. Dovete calcolarne il 9,19%." },
+      { id: 2, text: "Moltiplicate 1500 per 0,0919. Otterrete 137,85." },
+      { id: 3, text: "Prendete la parte intera: 137. Inserite 137 per sbloccare." }
     ]
   },
+
   {
     id: 5,
-    title: "Enigma 5: La Catena del Welfare",
-    description: "Una tempesta magnetica scatenata dall'indifferenza rischia di far crollare le difese dei cittadini più deboli. Per ricostruire la 'Catena del Welfare', dobbiamo capire un concetto fondamentale: non siamo isole! Se qualcuno perde il lavoro o si fa male, l'intera comunità interviene per sostenerlo.",
-    educationalTidbit: "La previdenza sociale si fonda sulla solidarietà nazionale. Chi ha di più contribuisce di più, e chi si trova in condizioni di grave difficoltà (disoccupazione, invalidità, povertà) riceve speciali aiuti. Questo sistema fa sì che nessuno sia lasciato indietro. Sconfigge la povertà e favorisce l'uguaglianza sociale!",
+    title: "Enigma 5: Il Principio Inderogabile",
+    description: "Manca una direttiva fondamentale nel core del sistema: l'obbligo civile che unisce tutti i cittadini.",
+    educationalTidbit: "L'Articolo 2 della Costituzione richiede l'adempimento dei doveri inderogabili di solidarietà politica, economica e sociale. Senza di essa, le fasce più deboli rimarrebbero isolate.",
     mechanicType: "decode",
-    question: "Trova e inserisci i frammenti mancanti per ricomporre la Catena del Welfare e svelare la parola magica: S _ _ _ _ _ _ _ _ _ _ _ (Scrivi in MAIUSCOLO).",
+    question: "Sostantivo femminile (11 lettere). Definisce il vincolo etico e giuridico di reciproco sostegno tra i membri della società, essenziale per la tenuta del welfare. Ripristina le maglie mancanti.",
     correctAnswer: "SOLIDARIETA",
     hints: [
-      { id: 1, text: "La parola descrive un valore dell'aiuto reciproco e dell'unione nelle difficoltà. Ha 11 lettere e inizia con la lettera S." },
-      { id: 2, text: "È il contrario di egoismo o indifferenza. Pensa a come si definisce il patto di mutuo aiuto: S - O - L - I - ? - ? - R - I - ? - T - A." },
-      { id: 3, text: "Usa i tasti lettera sotto la catena per inserire D, A ed E nelle maglie vuote. La parola finale descrive il sentimento di fratellanza collettiva." }
+      { id: 1, text: "È un sentimento e un dovere costituzionale. Si contrappone all'individualismo." },
+      { id: 2, text: "La parola è composta dalle lettere S-O-L-I-D-A-R-I-E-T-A." },
+      { id: 3, text: "Inserite D, A, E nelle posizioni vuote per comporre SOLIDARIETA." }
     ],
     mechanicData: {
       maskPositions: [4, 5, 8]
     }
   },
+
   {
     id: 6,
-    title: "Enigma 6: La Battaglia contro il Lavoro Nero",
-    description: "ATTENZIONE! Il Boss 'Signor Evasore' ha inviato il virus 'Lavoro Nero' per infettare la sala comandi! Vi promette un mucchio di monete subito, ma ssshhh... non vi farà firmare alcun foglio e vi ruberà lo Scudo Sociale del Futuro. Se vi farete male sul lavoro o vi ammalerete, verrete gettati via senza un soldo!",
-    educationalTidbit: "Il lavoro nero è il nemico numero uno della società e di voi ragazzi. Lavorare in nero sembra conveniente all'inizio (vi danno soldi in contanti e non si pagano tasse immediate), ma in realtà vi toglie ogni protezione: zero contributi pensionistici, zero tutele se vi fate male, zero congedi e zero diritti. È illegale e distrugge il welfare di tutti, perché l'evasore non contribuisce alla scuola, agli ospedali e alle pensioni pubbliche!",
+    title: "Enigma 6: Evasione e Dumping Sociale",
+    description: "ATTENZIONE! Il Boss 'Signor Evasore' tenta di deregolamentare il mercato introducendo il virus del 'Dumping Sociale'. Vi propone accordi in deroga senza tutele, mascherati da falsa flessibilità.",
+    educationalTidbit: "Il lavoro sommerso e il dumping sociale minano l'intero impianto macroeconomico: riducono le entrate fiscali, creano concorrenza sleale tra le aziende e lasciano i lavoratori senza coperture previdenziali e sanitarie.",
     mechanicType: "boss",
-    question: "Per sigillare il portale e cacciare l'Evasore, dovrete attivare e registrare il documento legale che garantisce diritti, orari equi, paga minima e contributi automatici. Qual è il nome di questo 'Scudo d'Accordo' stipulato tra lavoratore e datore di lavoro? (C _ _ _ _ _ _ _ _)",
+    question: "Per sconfiggere l'elusione, dovete riattivare lo strumento giuridico sinallagmatico che vincola datore e lavoratore al rispetto della normativa giuslavoristica e dei minimi tabellari. Qual è questo istituto? (9 lettere)",
     correctAnswer: "CONTRATTO",
     hints: [
-      { id: 1, text: "È un pezzo di carta fondamentale. Senza di esso si lavora 'in nero'. Con esso, invece, sarete cittadini protetti a norma di legge." },
-      { id: 2, text: "Inizia con 'CON...' e finisce con '...ATTO'. Si firma per stabilire quante ore dovrete lavorare, quanto sarete pagati e i vostri contributi INPS." },
-      { id: 3, text: "La super-parola per distruggere il Boss è CONTRATTO. Firmando un regolare contratto sbloccate il futuro sicuro!" }
+      { id: 1, text: "È un accordo vincolante tra due o più parti per costituire, regolare o estinguere un rapporto giuridico patrimoniale." },
+      { id: 2, text: "Nel mondo del lavoro, ne esiste uno Nazionale Collettivo (CCNL) e uno Individuale." },
+      { id: 3, text: "La super-parola per distruggere il Boss è CONTRATTO." }
     ]
-  }
-  ,
+  },
+
   {
     id: 7,
-    title: "Enigma 7: Il Labirinto dei Contributi",
-    description: "La macchina del tempo ora vi colloca in un labirinto di conti: per procedere dovrete bilanciare entrate e uscite di più nodi contemporaneamente, trovando la parola che riassume la sostenibilità del sistema.",
-    educationalTidbit: "La sostenibilità del sistema pensionistico dipende dal rapporto tra lavoratori attivi e beneficiari. Politiche efficaci e contributi regolari mantengono il sistema in equilibrio e garantiscono pensioni future.",
+    title: "Enigma 7: Il Teorema dell'Equilibrio",
+    description: "Per calibrare i flussi temporali a lungo termine, dovete decifrare il nome dell'indicatore di salute attuariale di un sistema pubblico.",
+    educationalTidbit: "La transizione demografica (invecchiamento della popolazione) richiede continue riforme per garantire l'equità intergenerazionale e mantenere il debito pubblico sotto controllo nel lunghissimo periodo.",
     mechanicType: "decode",
-    question: "Decifra l'anagramma per scoprire il valore-guida del sistema: S I B I L I T A O S S T E N (Rispondi in MAIUSCOLO senza spazi).",
+    question: "Decifra l'anagramma macroeconomico: S I B I L I T A O S S T E N (13 lettere). Indica la capacità del bilancio di far fronte agli impegni futuri senza collassare.",
     correctAnswer: "SOSTENIBILITA",
     hints: [
-      { id: 1, text: "È una parola molto lunga (13 lettere) che indica la capacità di durare nel tempo." },
-      { id: 2, text: "Inizia con 'SOSTENI' e finisce con 'TA'." },
-      { id: 3, text: "La parola è SOSTENIBILITA." }
+      { id: 1, text: "Deriva dal verbo 'sostenere'." },
+      { id: 2, text: "Inizia con 'SOSTEN' e finisce con 'ITA'." },
+      { id: 3, text: "La risposta esatta è SOSTENIBILITA." }
     ]
   },
 
   {
     id: 8,
-    title: "Enigma 8: Il Cifrario della Previdenza",
-    description: "Un messaggio cifrato chiede di dimostrare che capite come funziona il sistema: decifrate per scoprire la parola chiave che apre il forziere.",
-    educationalTidbit: "I messaggi cifrati ricordano che la comunicazione chiara fra istituzioni e cittadini è fondamentale: i servizi funzionano se le regole sono comprensibili e accessibili.",
+    title: "Enigma 8: Cifrario Shift-12",
+    description: "Una trasmissione di emergenza è stata intercettata. È protetta da un cifrario algoritmico basato sull'annualità fiscale.",
+    educationalTidbit: "La criptografia protegge i dati sensibili, così come le norme proteggono la privacy fiscale e previdenziale dei cittadini.",
     mechanicType: "decode",
-    question: "Decifra il testo con uno shift di 6 caratteri (Cifrario di Cesare). Il messaggio originale (ma trasformato) è: 'IUTZXOH'. Trova la parola in MAIUSCOLO.",
+    question: "Decifra il testo 'OAZFDUQ' applicando un Cifrario di Cesare con scorrimento all'indietro pari ai mesi di una normale annualità (12 posizioni).",
     correctAnswer: "CONTRIB",
     hints: [
-      { id: 1, text: "Prova a spostare ogni lettera 6 posizioni indietro nell'alfabeto (A<-G, B<-H ...)." },
-      { id: 2, text: "La parola decifrata è una radice di una parola più lunga: riguarda ciò che i lavoratori versano ogni mese." },
-      { id: 3, text: "La parola da inserire è CONTRIB (parte di CONTRIBUTI)." }
+      { id: 1, text: "Prendi ogni lettera di OAZFDUQ e torna indietro di 12 lettere nell'alfabeto italiano/internazionale." },
+      { id: 2, text: "La 'O' meno 12 posizioni diventa 'C'. La 'A' retrocede fino alla 'O'." },
+      { id: 3, text: "La decodifica genera la radice della parola: CONTRIB." }
     ]
   },
 
   {
     id: 9,
-    title: "Enigma 9: L'Equazione del Futuro",
-    description: "Un vecchio registratore chiede di risolvere un calcolo composto che simula l'accumulo di contributi e interessi: dimostrate che sapete ragionare per passaggi logici.",
-    educationalTidbit: "I contributi investiti e l'interesse tecnico determinano la sostenibilità a lungo termine. Capire la matematica dietro ai conti pubblici aiuta a interpretare le scelte politiche.",
+    title: "Enigma 9: La Politica Fiscale",
+    description: "I terminali vi chiedono di definire le coperture finanziarie strutturali per varare una riforma del Welfare State.",
+    educationalTidbit: "Le prestazioni previdenziali e assistenziali sono coperte non solo dai contributi diretti dei lavoratori, ma anche dalla fiscalità generale (IRPEF, IRES, IVA) gestita dal Ministero dell'Economia.",
     mechanicType: "icons",
-    question: "Quali sono le 3 componenti strutturali (non temporanee né emergenziali) che garantiscono la sostenibilità a lungo termine? Seleziona le 3 tessere corrette. La loro somma genererà la chiave numerica di sblocco.",
+    question: "Identificate le 3 componenti finanziarie strutturali che finanziano la previdenza ed assistenza pubblica, escludendo condoni o prestiti temporanei. La loro somma darà la chiave (2650).",
     correctAnswer: "2650",
     hints: [
-      { id: 1, text: "Evita le misure 'temporanee' o i fondi di 'emergenza': la previdenza si basa su fondamenta solide e a lungo termine." },
-      { id: 2, text: "Devi selezionare: Fondo Storico, Fondi di Investimento e Accantonamenti Tecnici." },
-      { id: 3, text: "Selezionando queste 3 tessere otterrai la somma di 2650. Questo è il codice da inserire!" }
-    ]
-    ,
+      { id: 1, text: "Dovete escludere il 'Condono Edilizio' e la 'Stampa Moneta'. Queste non sono coperture strutturali." },
+      { id: 2, text: "Scegliete Gettito Contributivo, Fiscalità Generale e Rendimenti." },
+      { id: 3, text: "Selezionando i tre valori corretti si otterrà 2650." }
+    ],
     mechanicData: {
       iconTessera: [
-        { id: 1, label: "Fondo Previdenziale Storico", val: 1500, isCorrect: true, power: "Base di contribuzione storica" },
-        { id: 2, label: "Fondi di Investimento Pubblico", val: 800, isCorrect: true, power: "Rendimento a lungo termine" },
-        { id: 3, label: "Accantonamenti Tecnici", val: 350, isCorrect: true, power: "Cuscinetto per le variabilità" },
-        { id: 4, label: "Bonus Temporaneo", val: 120, isCorrect: false, power: "Incentivo momentaneo, non contributivo" },
-        { id: 5, label: "Riserva Emergenza", val: 200, isCorrect: false, power: "Somma di standby" }
+        { id: 1, label: "Gettito Contributivo Diretto", val: 1500, isCorrect: true, power: "Premi base" },
+        { id: 2, label: "Rendimenti Finanziari", val: 800, isCorrect: true, power: "Gestione del capitale" },
+        { id: 3, label: "Fiscalità Generale", val: 350, isCorrect: true, power: "Tassazione progressiva" },
+        { id: 4, label: "Stampa Moneta a Debito", val: 120, isCorrect: false, power: "Copertura fittizia" },
+        { id: 5, label: "Condono Edilizio / Fiscale", val: 200, isCorrect: false, power: "Entrata una tantum" }
       ]
     }
   },
 
   {
     id: 10,
-    title: "Enigma 10: Lo Specchio delle Politiche",
-    description: "Davanti a voi due politiche alternative: una aumenta le tasse per sostenere subito i benefici, l'altra incentiva l'occupazione per aumentare i contributi futuri. Quale parola sintetizza la scelta che preserva diritti e crescita insieme?",
-    educationalTidbit: "Bilanciare equità e crescita è la sfida delle politiche pubbliche. Strategie miste possono coniugare protezione sociale e sviluppo economico.",
+    title: "Enigma 10: Moltiplicatore Sociale",
+    description: "Davanti a voi due modelli di spesa pubblica. Uno genera inflazione, l'altro produce capitale umano e crescita di lungo periodo.",
+    educationalTidbit: "Le politiche attive per il lavoro, la formazione, e la sanità non sono semplici 'costi' a bilancio, ma generano un moltiplicatore: aumentano la produttività futura del Paese.",
     mechanicType: "decode",
-    question: "Per coniugare diritti e crescita, non basta spendere: bisogna destinare le risorse di oggi per generare valore domani. Trova la parola di 12 lettere (inizia con IN e finisce con TO) che definisce questa fondamentale operazione economica e sociale.",
+    question: "Quale termine di 12 lettere definisce l'impiego di risorse in beni strumentali o capitale umano per ottenere un maggior prodotto futuro? Unisci i frammenti: INVE + STIM + ENTO.",
     correctAnswer: "INVESTIMENTO",
     hints: [
-      { id: 1, text: "È l'opposto di 'spesa improduttiva'. In finanza, lo fai per far fruttare il capitale nel tempo." },
-      { id: 2, text: "Unendo le parole 'IN', 'VESTI' e 'MENTO' otterrai la soluzione." },
-      { id: 3, text: "La parola esatta da digitare è INVESTIMENTO." }
+      { id: 1, text: "In economia aziendale indica l'acquisto di beni durevoli. Nel welfare, indica la formazione dei cittadini." },
+      { id: 2, text: "Basta leggere bene i frammenti della domanda." },
+      { id: 3, text: "La parola è INVESTIMENTO." }
     ]
   },
 
   {
     id: 11,
-    title: "Enigma 11: Il Cuore del Sistema",
-    description: "Siete quasi giunti al termine. Il portale temporale vi chiede di identificare il nome completo di questa imponente macchina di solidarietà e protezione pubblica che avete contribuito a riparare.",
-    educationalTidbit: "Il 'Welfare State' (o Stato Sociale) è il sistema attraverso cui una nazione si prende cura dei suoi cittadini, garantendo salute, previdenza, assistenza e istruzione pubblica per tutti.",
+    title: "Enigma 11: Architettura Istituzionale",
+    description: "Siete quasi giunti al termine. Il portale temporale vi chiede di identificare la terminologia anglosassone ufficiale di questo modello politico e sociale universale.",
+    educationalTidbit: "Nato nell'Europa del dopoguerra (Rapporto Beveridge, 1942), il concetto definisce uno Stato che interviene attivamente per garantire standard minimi di reddito, alimentazione, salute e sicurezza.",
     mechanicType: "decode",
-    question: "Trovate la definizione italiana di 12 lettere (divise in due parole) che traduce il concetto di 'Welfare State'. Inizia con 'STA' e finisce con 'ALE'. (Digitate le due parole separate da uno spazio).",
-    correctAnswer: "STATO SOCIALE",
+    question: "Traducete in lingua inglese il concetto di 'Stato Sociale'. Sono due parole, per un totale di 12 lettere (escluso lo spazio).",
+    correctAnswer: "WELFARE STATE",
     hints: [
-      { id: 1, text: "È composto da due parole. La prima è sinonimo di 'Nazione', la seconda significa 'relativo alla società'." },
-      { id: 2, text: "L'anagramma è: A A C E I L O O S S T T." },
-      { id: 3, text: "La risposta esatta da digitare è STATO SOCIALE." }
+      { id: 1, text: "La prima parola significa 'benessere' in inglese." },
+      { id: 2, text: "La seconda parola significa 'Stato'." },
+      { id: 3, text: "Digita WELFARE STATE (con lo spazio al centro)." }
     ]
   },
 
   {
     id: 12,
-    title: "Enigma 12: La Sfida Finale — Prova Combinata",
-    description: "Per ultimare la rigenerazione dello Scudo dovrete risolvere un enigma che richiede logica, conoscenza e attenzione ai dettagli: combinazione di singole lettere, somma numerica e scelta istituzionale.",
-    educationalTidbit: "Le sfide complesse richiedono pluralità di strumenti: alfabetizzazione civica, competenze numeriche e capacità critica servono insieme per comprendere il sistema di protezione sociale.",
+    title: "Enigma 12: Override di Sistema",
+    description: "L'ultimo blocco crittografico richiede la padronanza di tutte le variabili: acronimi istituzionali, aritmetica di base e articoli costituzionali.",
+    educationalTidbit: "Un cittadino consapevole sa collegare le competenze linguistiche, quelle matematiche e quelle giuridiche. Questa è l'essenza dell'Educazione Civica.",
     mechanicType: "decode",
-    question: "Combinazione finale: prendete la 1° lettera di 'PENSIONE', sommate le cifre di 2026 e scegliete l'articolo della Costituzione che garantisce l'assistenza (inserite tutto unito, MAIUSCOLO).",
-    correctAnswer: "P10ART38",
+    question: "Stringa di sblocco: Iniziale della prestazione pensionistica Invalidità/Vecchiaia/Superstiti (I) + il risultato della divisione 5000 / 500 + la sigla dell'istituto (INPS) + l'Articolo Costituzionale sull'assistenza. Formato: I10INPS38",
+    correctAnswer: "I10INPS38",
     hints: [
-      { id: 1, text: "1° lettera di 'PENSIONE' = P. Somma cifre 2+0+2+6 = 10. L'articolo chiave è 38." },
-      { id: 2, text: "Unisci tutto senza spazi: P + 10 + ART + 38 → P10ART38." },
-      { id: 3, text: "La stringa corretta da digitare è P10ART38." }
+      { id: 1, text: "Analizza passo passo: Iniziale di Invalidità (I). 5000 / 500 = 10." },
+      { id: 2, text: "La sigla dell'istituto è INPS. L'Articolo è il 38 (visto nell'Enigma 3)." },
+      { id: 3, text: "Unisci tutto senza spazi: I10INPS38." }
     ]
   }
 ];
